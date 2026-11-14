@@ -1,0 +1,762 @@
+/* Reminders theme */
+
+.reminders-body {
+  --reminder-cyan: #00e5ed;
+  --reminder-text: #f4f8ff;
+  --reminder-muted: #c1cede;
+}
+
+.reminders-body [hidden] {
+  display: none !important;
+}
+
+.reminders-body button,
+.reminders-body input,
+.reminders-body textarea {
+  font: inherit;
+}
+
+.reminders-body button:focus-visible,
+.reminders-body a:focus-visible,
+.reminders-body input:focus-visible,
+.reminders-body textarea:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 4px;
+}
+
+/* Page layout */
+
+.reminders-page {
+  max-width: 1600px;
+}
+
+.reminders-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.reminders-layout {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.1fr)
+    minmax(0, 0.8fr)
+    minmax(0, 1fr);
+
+  align-items: start;
+  gap: clamp(20px, 3vw, 40px);
+}
+
+/* Shared panel headings */
+
+.reminders-panel__header {
+  margin-bottom: 20px;
+}
+
+.reminders-panel__header h2 {
+  margin: 0;
+  color: var(--reminder-text);
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
+  font-weight: 600;
+}
+
+.reminders-panel__header p {
+  margin: 8px 0 0;
+  color: var(--reminder-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* Shared buttons */
+
+.reminder-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 48px;
+  padding: 12px 20px;
+
+  border: 1px solid rgba(200, 218, 239, 0.5);
+  border-radius: 18px;
+
+  background: rgba(43, 49, 69, 0.86);
+  color: #ffffff;
+
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.reminder-button--primary {
+  border-color: var(--reminder-cyan);
+  background: #075985;
+}
+
+.reminder-button:not(:disabled):hover {
+  transform: translateY(-2px);
+  border-color: var(--reminder-cyan);
+  background: #164e63;
+}
+
+.reminder-button:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.reminder-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Journal panel */
+
+.journal-panel {
+  min-width: 0;
+  padding-top: 8px;
+}
+
+.journal-form {
+  display: grid;
+  gap: 12px;
+}
+
+.journal-form > label,
+.reminder-editor > label {
+  color: var(--reminder-text);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.journal-form > input,
+.reminder-editor input,
+.reminder-editor textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 14px;
+
+  border: 1px solid rgba(0, 229, 237, 0.55);
+  border-radius: 12px;
+
+  background: rgba(5, 18, 34, 0.88);
+  color: var(--reminder-text);
+}
+
+.journal-form > input {
+  min-height: 46px;
+}
+
+/* Notebook frame */
+
+.journal-notebook {
+  position: relative;
+  margin-top: 20px;
+  padding: 26px 16px 18px;
+
+  border: 2px solid var(--reminder-cyan);
+  border-radius: 26px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10, 133, 197, 0.75),
+      rgba(2, 58, 107, 0.92)
+    );
+
+  box-shadow:
+    0 0 18px rgba(0, 229, 237, 0.25),
+    inset 0 0 0 5px rgba(0, 229, 237, 0.13),
+    inset 0 0 28px rgba(0, 229, 237, 0.14);
+}
+
+/* Decorative notebook binding */
+
+.journal-notebook::before {
+  content: "";
+  position: absolute;
+  top: -19px;
+  left: 22px;
+  right: 22px;
+
+  height: 32px;
+
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 10px,
+    #052f4b 10px 13px,
+    #00e5ed 13px 21px,
+    #8cfff4 21px 24px,
+    #052f4b 24px 27px,
+    transparent 27px 38px
+  );
+
+  border-radius: 8px;
+  filter: drop-shadow(0 0 4px rgba(0, 229, 237, 0.45));
+}
+
+.journal-notebook textarea {
+  display: block;
+  width: 100%;
+  min-height: 330px;
+  margin: 0;
+  padding: 8px 12px;
+
+  border: 1px solid rgba(140, 255, 244, 0.5);
+  border-radius: 14px;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 31px,
+      rgba(0, 229, 237, 0.4) 31px 32px
+    ),
+    rgba(3, 42, 77, 0.62);
+
+  background-origin: content-box;
+
+  color: #ffffff;
+  caret-color: #ffffff;
+
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 1rem;
+  line-height: 32px;
+
+  resize: vertical;
+}
+
+.journal-notebook textarea::placeholder {
+  color: #d0e8f4;
+  opacity: 1;
+}
+
+.journal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.journal-actions .reminder-button {
+  flex: 1;
+}
+
+/* Quick notes panel */
+
+.notes-panel {
+  min-width: 0;
+  padding-top: 8px;
+}
+
+.notes-list {
+  display: grid;
+  align-content: start;
+  gap: 24px;
+
+  max-height: 470px;
+  margin: 0 0 20px;
+  padding: 14px 4px 8px;
+
+  overflow-y: auto;
+  list-style: none;
+}
+
+/* JavaScript will create note cards with these classes. */
+
+.note-card {
+  position: relative;
+  min-width: 0;
+  padding: 26px 20px 18px;
+
+  border: 1px solid #24d9f3;
+  border-radius: 22px;
+
+  background: #075d7b;
+  color: #ffffff;
+
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+}
+
+/* Decorative tape */
+
+.note-card::before {
+  content: "";
+  position: absolute;
+  top: -11px;
+  left: 50%;
+
+  width: 42px;
+  height: 28px;
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(203, 225, 236, 0.58);
+
+  transform: translateX(-50%) rotate(-4deg);
+}
+
+.note-card__title {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.note-card__text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.note-card__date {
+  display: block;
+  margin-top: 14px;
+  color: #c8e8f1;
+  font-size: 0.7rem;
+}
+
+.note-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.note-card__actions button,
+.task-item__delete {
+  min-height: 44px;
+  padding: 8px 12px;
+
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 10px;
+
+  background: rgba(2, 20, 40, 0.4);
+  color: #ffffff;
+
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.note-card__actions button:hover,
+.task-item__delete:hover {
+  background: #123047;
+}
+
+.notes-panel > .reminder-button {
+  width: 100%;
+}
+
+/* Task panel */
+
+.tasks-panel {
+  min-width: 0;
+  padding: clamp(22px, 2.5vw, 32px);
+
+  border: 1px solid var(--reminder-cyan);
+  border-radius: 34px;
+
+  background: rgba(0, 79, 107, 0.85);
+
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 0 22px rgba(0, 229, 237, 0.12),
+    0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.tasks-panel .reminders-panel__header h2 {
+  font-size: clamp(1.6rem, 2.7vw, 2.3rem);
+}
+
+.task-progress {
+  margin: 0 0 20px;
+  color: #b9fff6;
+  font-size: 0.8rem;
+}
+
+.tasks-list {
+  display: grid;
+  gap: 18px;
+
+  max-height: 430px;
+  margin: 0 0 22px;
+  padding: 4px;
+
+  overflow-y: auto;
+  list-style: none;
+}
+
+/* JavaScript will create task rows with these classes. */
+
+.task-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 10px;
+
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(148, 235, 244, 0.2);
+}
+
+.task-item__label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.task-item__checkbox {
+  flex-shrink: 0;
+  width: 25px;
+  height: 25px;
+  margin: 2px 0 0;
+
+  accent-color: #00e5ed;
+  cursor: pointer;
+}
+
+.task-item__content {
+  min-width: 0;
+}
+
+.task-item__title {
+  display: block;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.task-item__date {
+  display: block;
+  margin-top: 5px;
+  color: #c7e7f0;
+  font-size: 0.75rem;
+}
+
+.task-item--completed .task-item__title {
+  color: #c4dfeb;
+  text-decoration: line-through;
+}
+
+.task-item__delete {
+  padding-inline: 10px;
+}
+
+.tasks-panel > .reminder-button {
+  width: 100%;
+}
+
+/* Help, empty states, and feedback */
+
+.field-help {
+  margin: 0;
+  color: var(--reminder-muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.empty-message {
+  margin: 0 0 20px;
+  padding: 20px 14px;
+
+  border: 1px dashed rgba(173, 213, 241, 0.35);
+  border-radius: 14px;
+
+  background: rgba(5, 18, 34, 0.55);
+  color: var(--reminder-muted);
+
+  font-size: 0.85rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.form-message {
+  margin: 0;
+  color: #a5fff0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.form-message:empty {
+  display: none;
+}
+
+.storage-notice {
+  margin: 0;
+  color: var(--reminder-muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.reminders-body input:disabled,
+.reminders-body textarea:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+/* Modal windows */
+
+.reminders-dialog {
+  width: min(92vw, 540px);
+  max-height: 90vh;
+  max-height: 90svh;
+
+  padding: clamp(20px, 3vw, 30px);
+
+  border: 1px solid rgba(0, 229, 237, 0.65);
+  border-radius: 24px;
+
+  background: #101c32;
+  color: var(--reminder-text);
+
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  overflow-y: auto;
+}
+
+.reminders-dialog::backdrop {
+  background: rgba(0, 4, 18, 0.82);
+}
+
+.reminders-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 24px;
+}
+
+.reminders-dialog__header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.reminders-dialog__header form {
+  margin: 0;
+}
+
+.reminders-dialog__close {
+  min-height: 44px;
+  padding: 8px 14px;
+
+  border: 1px solid #7b91ad;
+  border-radius: 10px;
+
+  background: #1e304c;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.reminders-dialog__close:hover {
+  background: #304763;
+}
+
+/* Note and task editors */
+
+.reminder-editor {
+  display: grid;
+  gap: 12px;
+}
+
+.reminder-editor textarea {
+  min-height: 150px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.reminder-editor input::placeholder,
+.reminder-editor textarea::placeholder {
+  color: #aebdd0;
+  opacity: 1;
+}
+
+.reminder-editor .reminder-button {
+  margin-top: 8px;
+}
+
+/* Journal reader */
+
+.journal-dialog {
+  width: min(94vw, 900px);
+}
+
+.journal-reader {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.7fr) minmax(0, 2fr);
+  gap: 24px;
+}
+
+.journal-reader__navigation {
+  min-width: 0;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.journal-entry-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+}
+
+/* JavaScript will create one button per saved date. */
+
+.journal-entry-button {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px;
+
+  border: 1px solid #42617e;
+  border-radius: 12px;
+
+  background: #1c2d47;
+  color: #e2e8f0;
+
+  text-align: left;
+  cursor: pointer;
+}
+
+.journal-entry-button:hover {
+  border-color: var(--reminder-cyan);
+}
+
+.journal-entry-button[aria-current="true"] {
+  border-color: var(--reminder-cyan);
+  background: #104458;
+  color: #a5fff0;
+}
+
+.journal-reader__entry {
+  min-width: 0;
+  padding: 22px;
+
+  border: 1px solid rgba(0, 229, 237, 0.25);
+  border-radius: 18px;
+
+  background: #14263d;
+}
+
+.journal-reader__entry h3 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+
+#journal-entry-date {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--reminder-muted);
+  font-size: 0.8rem;
+}
+
+.journal-entry-text {
+  color: #eef4ff;
+  font-size: 1rem;
+  line-height: 1.9;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Tablet layout */
+
+@media (max-width: 1100px) {
+  .reminders-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .journal-panel {
+    grid-column: 1;
+    grid-row: 1 / 3;
+  }
+
+  .notes-panel {
+    grid-column: 2;
+  }
+
+  .tasks-panel {
+    grid-column: 2;
+  }
+
+  .notes-list {
+    max-height: 300px;
+  }
+
+  .tasks-list {
+    max-height: 300px;
+  }
+}
+
+/* Mobile layout */
+
+@media (max-width: 700px) {
+  .reminders-page {
+    padding: 20px 16px;
+  }
+
+  .reminders-page .dashboard-header {
+    justify-content: center;
+  }
+
+  .reminders-page .dashboard-nav {
+    width: 100%;
+    border-radius: 20px;
+  }
+
+  .reminders-page .dashboard-nav__link {
+    flex: 1 1 calc(50% - 4px);
+    padding: 10px 12px;
+  }
+
+  .reminders-page .dashboard-exit {
+    margin-left: auto;
+  }
+
+  .reminders-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 30px;
+  }
+
+  .journal-panel,
+  .notes-panel,
+  .tasks-panel {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .journal-notebook textarea {
+    min-height: 290px;
+  }
+
+  .tasks-panel {
+    border-radius: 26px;
+  }
+
+  .journal-reader {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .journal-reader__navigation {
+    max-height: 160px;
+  }
+
+  .journal-reader__entry {
+    padding: 18px;
+  }
+}
+
+/* Reduced motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+  .reminder-button {
+    transition: none;
+  }
+}
