@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Keep your personal journal, quick notes, and daily tasks with Astro_Bytes."
+  >
+
+  <title>Reminders | Astro_Bytes Crew Health Portal</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="images/astro_bytes_logo.png"
+  >
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="reminders.css">
+
+  <script src="space-effects.js" defer></script>
+  <script src="reminders.js" defer></script>
+</head>
+
+<body class="health-body reminders-body">
+  <!-- Decorative background and interactive stars -->
+  <div class="health-background" aria-hidden="true">
+    <img src="images/background_segunda_tela.png" alt="">
+  </div>
+
+  <canvas id="space-effects" aria-hidden="true"></canvas>
+
+  <div class="health-page reminders-page">
+    <header class="dashboard-header">
+      <nav class="dashboard-nav" aria-label="Main navigation">
+        <a class="dashboard-nav__link" href="health.html">
+          Health
+        </a>
+
+        <a class="dashboard-nav__link" href="companion.html">
+          Companion
+        </a>
+
+        <a class="dashboard-nav__link" href="memories.html">
+          Memories
+        </a>
+
+        <a
+          class="dashboard-nav__link"
+          href="reminders.html"
+          aria-current="page"
+        >
+          Reminders
+        </a>
+      </nav>
+
+      <a class="dashboard-exit" href="index.html">
+        Exit Demonstration
+      </a>
+    </header>
+
+    <main
+      id="main-content"
+      class="reminders-main"
+      aria-labelledby="reminders-title"
+    >
+      <header class="dashboard-intro">
+        <h1 id="reminders-title">Your Personal Space</h1>
+        <p>A place for your thoughts, notes, and daily plans.</p>
+      </header>
+
+      <div class="reminders-layout">
+        <!-- Journal editor -->
+        <section
+          class="journal-panel"
+          aria-labelledby="journal-title"
+        >
+          <header class="reminders-panel__header">
+            <h2 id="journal-title">Journal</h2>
+            <p>Write a little about your day.</p>
+          </header>
+
+          <form id="journal-form" class="journal-form">
+            <label for="journal-date">Entry date</label>
+
+            <input
+              id="journal-date"
+              name="entryDate"
+              type="date"
+              required
+              disabled
+            >
+
+            <label for="journal-text">Today's entry</label>
+
+            <div class="journal-notebook">
+              <textarea
+                id="journal-text"
+                name="entryText"
+                rows="12"
+                maxlength="10000"
+                placeholder="Dear journal, today..."
+                aria-describedby="journal-help"
+                required
+                disabled
+              ></textarea>
+            </div>
+
+            <p id="journal-help" class="field-help">
+              Saving again for the same date updates that entry.
+              Up to 10,000 characters.
+            </p>
+
+            <div class="journal-actions">
+              <button
+                id="save-journal-button"
+                class="reminder-button reminder-button--primary"
+                type="submit"
+                disabled
+              >
+                Save Entry
+              </button>
+
+              <button
+                id="read-journal-button"
+                class="reminder-button"
+                type="button"
+                aria-haspopup="dialog"
+                aria-controls="journal-dialog"
+                disabled
+              >
+                Read Journal
+              </button>
+            </div>
+
+            <p
+              id="journal-message"
+              class="form-message"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+            ></p>
+          </form>
+        </section>
+
+        <!-- Quick notes -->
+        <section
+          class="notes-panel"
+          aria-labelledby="notes-title"
+        >
+          <header class="reminders-panel__header">
+            <h2 id="notes-title">Quick Notes</h2>
+            <p>Keep small thoughts close by.</p>
+          </header>
+
+          <!-- JavaScript will render note cards here. -->
+          <ul
+            id="notes-list"
+            class="notes-list"
+            aria-label="Saved quick notes"
+          ></ul>
+
+          <p id="notes-empty" class="empty-message">
+            No notes yet. Add your first thought.
+          </p>
+
+          <button
+            id="add-note-button"
+            class="reminder-button"
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="note-dialog"
+            disabled
+          >
+            Add Note
+          </button>
+        </section>
+
+        <!-- Task checklist -->
+        <section
+          class="tasks-panel"
+          aria-labelledby="tasks-title"
+        >
+          <header class="reminders-panel__header">
+            <h2 id="tasks-title">To-Do List</h2>
+            <p>One step at a time.</p>
+          </header>
+
+          <p id="task-progress" class="task-progress">
+            0 of 0 tasks completed
+          </p>
+
+          <!-- JavaScript will render task checkboxes here. -->
+          <ul
+            id="tasks-list"
+            class="tasks-list"
+            aria-label="Your tasks"
+          ></ul>
+
+          <p id="tasks-empty" class="empty-message">
+            Your list is clear. Add a task when you are ready.
+          </p>
+
+          <button
+            id="add-task-button"
+            class="reminder-button"
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="task-dialog"
+            disabled
+          >
+            Add Task
+          </button>
+        </section>
+      </div>
+
+      <p
+        id="reminders-message"
+        class="form-message"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      ></p>
+
+      <p id="reminders-storage-notice" class="storage-notice">
+        Storage is not connected yet. Editing will be available
+        once the page script is ready.
+      </p>
+
+      <noscript>
+        <p class="storage-notice">
+          Enable JavaScript to save journal entries, notes, and tasks.
+        </p>
+      </noscript>
+    </main>
+
+    <footer class="dashboard-footer">
+      <p>Astro_Bytes · Crew Health Portal</p>
+      <p>Personal organization prototype · Independent Space Apps project</p>
+    </footer>
+  </div>
+
+  <!-- Journal reader -->
+  <dialog
+    id="journal-dialog"
+    class="reminders-dialog journal-dialog"
+    aria-labelledby="journal-reader-title"
+  >
+    <header class="reminders-dialog__header">
+      <h2 id="journal-reader-title">Your Journal</h2>
+
+      <form method="dialog">
+        <button
+          class="reminders-dialog__close"
+          type="submit"
+          aria-label="Close journal"
+        >
+          Close
+        </button>
+      </form>
+    </header>
+
+    <p id="journal-reader-empty" class="empty-message">
+      No journal entries yet.
+    </p>
+
+    <div id="journal-reader-content" class="journal-reader" hidden>
+      <nav
+        class="journal-reader__navigation"
+        aria-label="Saved journal entries"
+      >
+        <!-- JavaScript will list dates from newest to oldest. -->
+        <ul id="journal-entry-list" class="journal-entry-list"></ul>
+      </nav>
+
+      <article
+        class="journal-reader__entry"
+        aria-labelledby="journal-entry-title"
+      >
+        <h3 id="journal-entry-title">Select an entry</h3>
+
+        <time id="journal-entry-date" hidden></time>
+
+        <div id="journal-entry-text" class="journal-entry-text"></div>
+      </article>
+    </div>
+  </dialog>
+
+  <!-- Add or edit a quick note -->
+  <dialog
+    id="note-dialog"
+    class="reminders-dialog"
+    aria-labelledby="note-dialog-title"
+  >
+    <header class="reminders-dialog__header">
+      <h2 id="note-dialog-title">Add Note</h2>
+
+      <form method="dialog">
+        <button
+          class="reminders-dialog__close"
+          type="submit"
+          aria-label="Close note editor"
+        >
+          Close
+        </button>
+      </form>
+    </header>
+
+    <form id="note-form" class="reminder-editor">
+      <input id="note-id" name="noteId" type="hidden">
+
+      <label for="note-title">Title</label>
+      <input
+        id="note-title"
+        name="noteTitle"
+        type="text"
+        maxlength="80"
+        placeholder="A thought to remember"
+        required
+      >
+
+      <label for="note-text">Note</label>
+      <textarea
+        id="note-text"
+        name="noteText"
+        rows="5"
+        maxlength="2000"
+        placeholder="Write your note..."
+        required
+      ></textarea>
+
+      <button
+        id="save-note-button"
+        class="reminder-button reminder-button--primary"
+        type="submit"
+        disabled
+      >
+        Save Note
+      </button>
+
+      <p
+        id="note-message"
+        class="form-message"
+        role="status"
+        aria-live="polite"
+      ></p>
+    </form>
+  </dialog>
+
+  <!-- Add a task -->
+  <dialog
+    id="task-dialog"
+    class="reminders-dialog"
+    aria-labelledby="task-dialog-title"
+  >
+    <header class="reminders-dialog__header">
+      <h2 id="task-dialog-title">Add Task</h2>
+
+      <form method="dialog">
+        <button
+          class="reminders-dialog__close"
+          type="submit"
+          aria-label="Close task editor"
+        >
+          Close
+        </button>
+      </form>
+    </header>
+
+    <form id="task-form" class="reminder-editor">
+      <label for="task-title">Task</label>
+      <input
+        id="task-title"
+        name="taskTitle"
+        type="text"
+        maxlength="160"
+        placeholder="What would you like to do?"
+        required
+      >
+
+      <label for="task-date">Due date (optional)</label>
+      <input
+        id="task-date"
+        name="taskDate"
+        type="date"
+      >
+
+      <p class="field-help">
+        Due dates appear in your list. They do not trigger notifications.
+      </p>
+
+      <button
+        id="save-task-button"
+        class="reminder-button reminder-button--primary"
+        type="submit"
+        disabled
+      >
+        Save Task
+      </button>
+
+      <p
+        id="task-message"
+        class="form-message"
+        role="status"
+        aria-live="polite"
+      ></p>
+    </form>
+  </dialog>
+</body>
+</html>

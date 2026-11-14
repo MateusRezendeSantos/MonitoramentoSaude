@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Photos from home for the crew, with Astro_Bytes."
+  >
+
+  <title>Memories | Astro_Bytes Crew Health Portal</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="images/astro_bytes_logo.png"
+  >
+
+  <!-- Same stylesheet as health.html, so both pages share one look. -->
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+/* Only what is specific to the Memories page. */
+:root{--text:#eef2fb;--muted:#aab3c8;--cyan:#00e5ed;--pink:#ff9ec7;--peach:#ffd3a8;--card:#262a38}
+#stars{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.health-page{position:relative;z-index:1}
+.memories-main{display:block}
+.memories-card{margin-top:24px}
+.bar{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:22px 0 30px;align-items:center}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.box h2{color:#3b3050;font-size:1.5rem}
+/* controls */
+.bar{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:28px 0 30px;align-items:center}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font:inherit;font-weight:700;color:var(--text);background:rgba(38,42,56,.7);border:1.5px solid #3a4157;padding:9px 18px;border-radius:999px;cursor:pointer;transition:transform .2s,border-color .2s,background .2s}
+.chip:hover{transform:translateY(-2px);border-color:var(--cyan)}
+.chip[aria-pressed="true"]{background:var(--cyan);color:#06222a;border-color:var(--cyan)}
+.add{font:inherit;font-weight:800;color:#2a1330;background:linear-gradient(135deg,var(--pink),var(--peach));border:0;padding:12px 24px;border-radius:999px;cursor:pointer;box-shadow:0 8px 24px rgba(255,158,199,.28);transition:transform .2s,box-shadow .2s}
+.add:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 12px 30px rgba(255,158,199,.4)}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+
+/* gallery */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:34px 28px}
+.polaroid{
+  position:relative;border:0;font:inherit;color:#3b3050;text-align:left;cursor:pointer;
+  background:#fff8f2;border-radius:22px;padding:12px 12px 16px;
+  box-shadow:0 14px 34px rgba(0,0,0,.45);
+  transform:rotate(var(--tilt));
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+}
+.polaroid:hover{transform:rotate(0) translateY(-8px) scale(1.04);box-shadow:0 22px 44px rgba(0,0,0,.55),0 0 0 3px rgba(92,225,230,.5)}
+.photo{aspect-ratio:1/1;border-radius:14px;overflow:hidden;display:grid;place-items:center;font-size:4.6rem}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.photo span{filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.polaroid:hover .photo span{transform:scale(1.18) rotate(-6deg)}
+.cap{margin-top:12px;font-weight:800;font-size:1.05rem;padding:0 4px}
+.date{font-size:.88rem;color:#8a7f9c;padding:2px 4px 0}
+.heart{position:absolute;top:-10px;right:-8px;font-size:1.5rem;opacity:0;transform:scale(.4);transition:.3s}
+.polaroid:hover .heart{opacity:1;transform:scale(1) rotate(10deg)}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:60px 0}
+
+/* lightbox */
+dialog{border:0;background:transparent;color:var(--text);max-width:min(560px,92vw);width:100%;margin:auto;overflow:visible}
+dialog::backdrop{background:rgba(3,2,12,.8);backdrop-filter:blur(6px)}
+.box{background:#fff8f2;color:#3b3050;border-radius:28px;padding:16px 16px 22px;box-shadow:0 30px 70px rgba(0,0,0,.6);animation:pop .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
+.box .photo{aspect-ratio:4/3;font-size:8rem;border-radius:18px}
+.box h2{font-size:1.5rem;margin:16px 6px 2px}
+.box p{margin:0 6px;color:#8a7f9c}
+.row{display:flex;gap:10px;justify-content:space-between;align-items:center;margin:16px 6px 0}
+.nav{display:flex;gap:8px}
+.btn{font:inherit;font-weight:800;border:0;border-radius:999px;padding:10px 18px;cursor:pointer;background:#efe3f7;color:#3b3050;transition:transform .2s}
+.btn:hover{transform:scale(1.06)}
+.btn.danger{background:#ffe0e4;color:#a23a52}
+.close{position:absolute;top:-14px;right:-6px;width:42px;height:42px;border-radius:50%;background:var(--cyan);color:#06222a;font-size:1.3rem;font-weight:800;border:0;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.4)}
+#file{display:none}
+
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);background:var(--card);border:1px solid var(--cyan);padding:12px 22px;border-radius:999px;opacity:0;pointer-events:none;transition:.35s;z-index:5}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:600px){.grid{gap:28px 18px}}
+  </style>
+</head>
+
+<body class="health-body">
+  <!-- Same blurred background layer as the Health page. -->
+  <div class="health-background" aria-hidden="true">
+    <img src="images/background_segunda_tela.png" alt="">
+  </div>
+
+  <canvas id="stars" aria-hidden="true"></canvas>
+
+  <div class="health-page">
+    <header class="dashboard-header">
+      <nav class="dashboard-nav" aria-label="Main navigation">
+        <a class="dashboard-nav__link" href="health.html">
+          Health
+        </a>
+
+        <!-- Companion and Reminders will become links when their pages are ready. -->
+        <a class="dashboard-nav__link" href="companion.html">
+            Companion
+        </a>
+
+        <a
+          class="dashboard-nav__link"
+          href="memories.html"
+          aria-current="page"
+        >
+          Memories
+        </a>
+
+        <a class="dashboard-nav__link" href="reminders.html">
+            Reminders
+        </a>
+      </nav>
+
+      <a class="dashboard-exit" href="index.html">
+        Exit Demonstration
+      </a>
+    </header>
+
+    <main id="main-content" class="memories-main">
+      <header class="dashboard-intro">
+        <h1>Memories</h1>
+        <p>Photos from home, waiting for you.</p>
+      </header>
+
+      <section class="health-card memories-card" aria-labelledby="photos-title">
+        <header class="health-card__header">
+          <h2 id="photos-title">Family Photos</h2>
+          <p>Pick a photo to see it up close, or add new ones from your device.</p>
+        </header>
+
+        <div class="bar">
+          <div class="chips" id="chips" role="group" aria-label="Albums"></div>
+          <button class="add" id="addBtn" type="button">＋ Add photo</button>
+          <input id="file" type="file" accept="image/*" multiple>
+        </div>
+
+        <div class="grid" id="grid" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="dashboard-footer">
+      <p>Astro_Bytes · Crew Health Portal</p>
+      <p>Simulated data · Independent Space Apps project</p>
+    </footer>
+  </div>
+
+<dialog id="dlg" aria-label="Photo viewer">
+  <div class="box" style="position:relative">
+    <button class="close" id="close" type="button" aria-label="Close">✕</button>
+    <div class="photo" id="dPhoto"></div>
+    <h2 id="dTitle"></h2>
+    <p id="dDate"></p>
+    <div class="row">
+      <button class="btn danger" id="del" type="button" hidden>Remove photo</button>
+      <span></span>
+      <div class="nav">
+        <button class="btn" id="prev" type="button" aria-label="Previous photo">‹</button>
+        <button class="btn" id="next" type="button" aria-label="Next photo">›</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ---------- Data ---------- */
+const SAMPLE = [
+  {id:'s1',emoji:'👨‍👩‍👧',title:'Sunday breakfast',date:'Spring 2026',album:'Family',a:'#ffd3a8',b:'#ff9ec7'},
+  {id:'s2',emoji:'🐶',title:'Biscuit waiting by the door',date:'Last summer',album:'Pets',a:'#ffe9a8',b:'#ffb37a'},
+  {id:'s3',emoji:'🎂',title:'Mom’s birthday',date:'March 2026',album:'Family',a:'#ffc8e0',b:'#c3aaff'},
+  {id:'s4',emoji:'🌻',title:'Grandma’s garden',date:'July 2025',album:'Home',a:'#d8f5a8',b:'#7fe3b0'},
+  {id:'s5',emoji:'🏖️',title:'Beach day with cousins',date:'January 2026',album:'Family',a:'#a8ecff',b:'#8fb4ff'},
+  {id:'s6',emoji:'🐱',title:'Mochi on the sofa',date:'Last winter',album:'Pets',a:'#e3d1ff',b:'#ffc8e0'},
+  {id:'s7',emoji:'🥳',title:'Farewell dinner with friends',date:'Before launch',album:'Friends',a:'#ffb8c6',b:'#ffd98f'},
+  {id:'s8',emoji:'🏡',title:'Our front porch',date:'Autumn 2025',album:'Home',a:'#b8e6ff',b:'#d6c4ff'}
+];
+const KEY='memories-photos-v1';
+let mine=[];
+try{mine=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){mine=[]}
+let album='All', view=[], idx=0;
+
+const $=id=>document.getElementById(id);
+const grid=$('grid'), dlg=$('dlg');
+
+function all(){return [...mine,...SAMPLE]}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(mine))}catch(e){toast('Not enough space to keep this photo after closing.')}}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2600)}
+
+/* ---------- Rendering ---------- */
+function photoHTML(p){
+  return p.src
+    ? `<img src="${p.src}" alt="${esc(p.title)}">`
+    : `<span aria-hidden="true">${p.emoji}</span>`;
+}
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function bg(p){return p.src?'#fff':`linear-gradient(135deg,${p.a},${p.b})`}
+
+function renderChips(){
+  const albums=['All',...new Set(all().map(p=>p.album))];
+  $('chips').innerHTML=albums.map(a=>`<button class="chip" type="button" aria-pressed="${a===album}" data-a="${a}">${a}</button>`).join('');
+}
+function render(){
+  view=all().filter(p=>album==='All'||p.album===album);
+  renderChips();
+  if(!view.length){grid.innerHTML='<p class="empty">No photos in this album yet. Use “Add photo” to bring a piece of home along.</p>';return}
+  grid.innerHTML=view.map((p,i)=>{
+    const tilt=((i*37)%7-3)*0.9;
+    return `<button class="polaroid" type="button" data-i="${i}" style="--tilt:${tilt}deg" aria-label="Open ${esc(p.title)}">
+      <span class="heart" aria-hidden="true">💖</span>
+      <div class="photo" style="background:${bg(p)}">${photoHTML(p)}</div>
+      <div class="cap">${esc(p.title)}</div>
+      <div class="date">${esc(p.date)}</div>
+    </button>`}).join('');
+}
+
+/* ---------- Viewer ---------- */
+function openAt(i){
+  idx=(i+view.length)%view.length;
+  const p=view[idx];
+  const ph=$('dPhoto'); ph.style.background=bg(p); ph.innerHTML=photoHTML(p);
+  $('dTitle').textContent=p.title; $('dDate').textContent=p.date+' · '+p.album;
+  $('del').hidden=!p.src;
+  $('prev').hidden=$('next').hidden=view.length<2;
+  if(!dlg.open) dlg.showModal();
+}
+grid.addEventListener('click',e=>{const b=e.target.closest('.polaroid');if(b)openAt(+b.dataset.i)});
+$('chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b){album=b.dataset.a;render()}});
+$('close').onclick=()=>dlg.close();
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+$('prev').onclick=()=>openAt(idx-1);
+$('next').onclick=()=>openAt(idx+1);
+dlg.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')openAt(idx-1);if(e.key==='ArrowRight')openAt(idx+1)});
+$('del').onclick=()=>{
+  const p=view[idx]; mine=mine.filter(m=>m.id!==p.id); save();
+  dlg.close(); if(!all().some(x=>x.album===album))album='All'; render(); toast('Photo removed');
+};
+
+/* ---------- Add photos ---------- */
+$('addBtn').onclick=()=>$('file').click();
+$('file').addEventListener('change',async e=>{
+  const files=[...e.target.files]; e.target.value='';
+  for(const f of files){
+    try{
+      const src=await shrink(f);
+      const name=f.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').trim()||'New memory';
+      mine.unshift({id:'u'+Date.now()+Math.random().toString(36).slice(2,6),src,title:name,
+        date:new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),
+        album:album==='All'?'Family':album});
+    }catch(err){toast('That file could not be opened as a photo.')}
+  }
+  save(); render(); if(files.length) toast(files.length>1?'Photos added':'Photo added');
+});
+function shrink(file){
+  return new Promise((res,rej)=>{
+    const img=new Image(), url=URL.createObjectURL(file);
+    img.onload=()=>{
+      const s=Math.min(1,900/Math.max(img.width,img.height));
+      const c=document.createElement('canvas');
+      c.width=Math.round(img.width*s); c.height=Math.round(img.height*s);
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg',.82));
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);rej()};
+    img.src=url;
+  });
+}
+render();
+
+/* ---------- Interactive starfield ---------- */
+(function(){
+  const cv=$('stars'), ctx=cv.getContext('2d');
+  const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let W,H,stars=[],mouse={x:-9999,y:-9999,on:false};
+  const tint=['255,255,255','190,235,255','255,214,235','225,210,255'];
+
+  function resize(){
+    const d=Math.min(devicePixelRatio||1,2);
+    W=innerWidth;H=innerHeight;
+    cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);
+    const n=Math.round(W*H/5500);
+    stars=Array.from({length:n},()=>{
+      const z=Math.random();
+      return {x:Math.random()*W,y:Math.random()*H,vx:0,vy:0,
+        bx:(Math.random()-.5)*.12*(.4+z),by:(Math.random()-.5)*.12*(.4+z),
+        r:.5+z*1.7,ph:Math.random()*6.28,sp:.5+Math.random()*1.5,c:tint[(Math.random()*tint.length)|0]};
+    });
+  }
+  addEventListener('resize',resize);
+  addEventListener('pointermove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;mouse.on=true});
+  addEventListener('pointerleave',()=>{mouse.on=false;mouse.x=mouse.y=-9999});
+  addEventListener('pointerdown',e=>{ // little burst on click
+    for(const s of stars){
+      const dx=s.x-e.clientX,dy=s.y-e.clientY,d=Math.hypot(dx,dy);
+      if(d<220&&d>0){const f=(1-d/220)*7;s.vx+=dx/d*f;s.vy+=dy/d*f}
+    }
+  });
+
+  function star(x,y,r,rot){ // 4-point sparkle for the bigger stars
+    ctx.beginPath();
+    for(let i=0;i<8;i++){
+      const a=rot+i*Math.PI/4, rr=i%2?r*.45:r*2.4;
+      ctx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr);
+    }
+    ctx.closePath();ctx.fill();
+  }
+
+  let t=0;
+  function frame(){
+    t+=.016;
+    ctx.clearRect(0,0,W,H);
+    const R=150;
+    const near=[];
+    for(const s of stars){
+      if(!still){
+        const dx=s.x-mouse.x,dy=s.y-mouse.y,d=Math.hypot(dx,dy);
+        if(mouse.on&&d<R&&d>0){const f=(1-d/R)*.5;s.vx+=dx/d*f;s.vy+=dy/d*f;near.push(s)}
+        s.vx+=(s.bx-s.vx)*.02;s.vy+=(s.by-s.vy)*.02;
+        s.x+=s.vx;s.y+=s.vy;
+        if(s.x<-10)s.x=W+10;if(s.x>W+10)s.x=-10;
+        if(s.y<-10)s.y=H+10;if(s.y>H+10)s.y=-10;
+      }
+      const tw=still?1:.55+.45*Math.sin(t*s.sp+s.ph);
+      ctx.fillStyle=`rgba(${s.c},${tw})`;
+      if(s.r>1.6){star(s.x,s.y,s.r,0)}
+      else{ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,6.283);ctx.fill()}
+    }
+    // soft threads from the cursor to stars close by
+    if(mouse.on&&!still){
+      ctx.lineWidth=1;
+      for(const s of stars){
+        const d=Math.hypot(s.x-mouse.x,s.y-mouse.y);
+        if(d<R*1.25){
+          ctx.strokeStyle=`rgba(92,225,230,${(1-d/(R*1.25))*.35})`;
+          ctx.beginPath();ctx.moveTo(mouse.x,mouse.y);ctx.lineTo(s.x,s.y);ctx.stroke();
+        }
+      }
+      const g=ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,90);
+      g.addColorStop(0,'rgba(92,225,230,.14)');g.addColorStop(1,'rgba(92,225,230,0)');
+      ctx.fillStyle=g;ctx.fillRect(mouse.x-90,mouse.y-90,180,180);
+    }
+    if(!still)requestAnimationFrame(frame);
+  }
+  resize();
+  if(still)frame();else requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

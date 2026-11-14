@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Review your daily health records, sleep history, and physical activities with Astro_Bytes."
+  >
+
+  <title>Health | Astro_Bytes Crew Health Portal</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="images/astro_bytes_logo.png"
+  >
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="space-effects.js" defer></script>
+</head>
+
+<body class="health-body">
+    <!-- Decorative stars and cursor glow -->
+    <canvas id="space-effects" aria-hidden="true"></canvas>
+
+  <!-- This background layer will be blurred through CSS. -->
+  <div class="health-background" aria-hidden="true">
+    <img src="images/background_segunda_tela.png" alt="">
+  </div>
+
+  <div class="health-page">
+    <header class="dashboard-header">
+      <nav class="dashboard-nav" aria-label="Main navigation">
+        <a
+          class="dashboard-nav__link"
+          href="health.html"
+          aria-current="page"
+        >
+          Health
+        </a>
+
+        <!-- These sections will become links when their pages are ready. -->
+        <a class="dashboard-nav__link" href="companion.html">
+            Companion
+        </a>
+
+        <a class="dashboard-nav__link" href="memories.html">
+          Memories
+        </a>
+
+        <a class="dashboard-nav__link" href="reminders.html">
+            Reminders
+        </a>
+      </nav>
+
+      <p class="mission-counter">
+        <strong id="mission-days">24</strong>
+        <span>days in space</span>
+      </p>
+
+      <a class="dashboard-exit" href="index.html">
+        Exit Demonstration
+      </a>
+    </header>
+
+    <main id="main-content" class="health-dashboard">
+        <header class="dashboard-intro">
+            <h1>Physical Health</h1>
+            <p>
+            Demonstration profile. All measurements are simulated.
+            </p>
+        </header>
+
+        <!-- Left column: sleep and daily routine -->
+        <div class="dashboard-column dashboard-column--left">
+            <section
+            class="health-card sleep-card"
+            aria-labelledby="sleep-title"
+            >
+            <header class="health-card__header">
+                <h2 id="sleep-title">Sleep Overview</h2>
+                <p>Recent sleep duration</p>
+            </header>
+
+            <div class="sleep-card__content">
+                <figure class="sleep-chart">
+                <svg
+                    class="sleep-chart__graphic"
+                    viewBox="0 0 360 180"
+                    role="img"
+                    aria-labelledby="sleep-chart-title sleep-chart-description"
+                >
+                    <title id="sleep-chart-title">
+                    Sleep duration over four mission days
+                    </title>
+
+                    <desc id="sleep-chart-description">
+                    Simulated sleep duration: 7 hours on day 21,
+                    8 hours on day 22, 7.5 hours on day 23,
+                    and 8.5 hours on day 24.
+                    </desc>
+
+                    <g class="chart-grid" stroke="currentColor" opacity="0.25">
+                    <line x1="45" y1="25" x2="335" y2="25"/>
+                    <line x1="45" y1="65" x2="335" y2="65"/>
+                    <line x1="45" y1="105" x2="335" y2="105"/>
+                    <line x1="45" y1="145" x2="335" y2="145"/>
+                    </g>
+
+                    <g class="chart-labels" fill="currentColor" font-size="12">
+                    <text x="8" y="29">9 h</text>
+                    <text x="8" y="69">8 h</text>
+                    <text x="8" y="109">7 h</text>
+                    <text x="8" y="149">6 h</text>
+
+                    <text x="45" y="170" text-anchor="middle">21</text>
+                    <text x="140" y="170" text-anchor="middle">22</text>
+                    <text x="235" y="170" text-anchor="middle">23</text>
+                    <text x="330" y="170" text-anchor="middle">24</text>
+                    </g>
+
+                    <polyline
+                    class="chart-line"
+                    points="45,105 140,65 235,85 330,45"
+                    fill="none"
+                    stroke="#00e5ed"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    />
+
+                    <g class="chart-points" fill="#00e5ed">
+                    <circle cx="45" cy="105" r="4"/>
+                    <circle cx="140" cy="65" r="4"/>
+                    <circle cx="235" cy="85" r="4"/>
+                    <circle cx="330" cy="45" r="4"/>
+                    </g>
+                </svg>
+
+                <figcaption>Hours slept by mission day</figcaption>
+                </figure>
+
+                <div class="sleep-summary">
+                <p class="sleep-summary__label">Last recorded sleep</p>
+                <p class="sleep-summary__value">8h 30m</p>
+                <p class="sleep-summary__date">Mission day 24</p>
+                </div>
+            </div>
+            </section>
+
+            <section
+            class="health-card routine-card"
+            aria-labelledby="routine-title"
+            >
+            <header class="health-card__header">
+                <h2 id="routine-title">Daily Check-In</h2>
+                <p>Your latest recorded routine</p>
+            </header>
+
+            <dl class="routine-list">
+                <div class="routine-list__item">
+                <dt>Reported fatigue</dt>
+                <dd>2 / 5 — Mild</dd>
+                </div>
+
+                <div class="routine-list__item">
+                <dt>Reported sleep quality</dt>
+                <dd>Good</dd>
+                </div>
+
+                <div class="routine-list__item">
+                <dt>Exercise logged</dt>
+                <dd>30 minutes</dd>
+                </div>
+            </dl>
+
+            <p class="routine-note">
+                These entries describe the demonstration profile.
+            </p>
+            </section>
+
+            <!-- Individual exercise plan -->
+            <section
+            class="health-card exercise-card"
+            aria-labelledby="exercise-title"
+            >
+            <header class="health-card__header">
+                <h2 id="exercise-title">Exercise Plan</h2>
+                <p>Demonstration schedule · Mission day 24</p>
+            </header>
+
+            <p class="exercise-progress">
+                <strong id="exercise-completed-count">1 of 2</strong>
+                planned sessions logged
+            </p>
+
+            <ul class="exercise-session-list">
+                <li class="exercise-session exercise-session--logged">
+                <div class="exercise-session__heading">
+                    <h3>Aerobic Session</h3>
+
+                    <span class="exercise-session__status">
+                    <span aria-hidden="true">✓</span>
+                    Logged
+                    </span>
+                </div>
+
+                <p class="exercise-session__equipment">
+                    Equipment: CEVIS
+                </p>
+
+                <p class="exercise-session__description">
+                    Cycle ergometer session for aerobic conditioning.
+                </p>
+
+                <p class="exercise-session__record">
+                    Recorded duration: 30 minutes · Simulated entry
+                </p>
+                </li>
+
+                <li class="exercise-session exercise-session--pending">
+                <div class="exercise-session__heading">
+                    <h3>Resistance Session</h3>
+
+                    <span class="exercise-session__status">
+                    <span aria-hidden="true">○</span>
+                    Pending
+                    </span>
+                </div>
+
+                <p class="exercise-session__equipment">
+                    Equipment: ARED
+                </p>
+
+                <p class="exercise-session__description">
+                    Resistance training session from the individual exercise plan.
+                </p>
+
+                <p class="exercise-session__record">
+                    No session recorded for today.
+                </p>
+                </li>
+            </ul>
+
+            <div class="exercise-equipment">
+                <h3>Equipment Availability</h3>
+
+                <p class="exercise-equipment__note">
+                Simulated availability for this demonstration.
+                </p>
+
+                <ul class="exercise-equipment__list">
+                <li>
+                    <strong>ARED</strong>
+                    <span class="equipment-state equipment-state--available">
+                    Available
+                    </span>
+                </li>
+
+                <li>
+                    <strong>CEVIS</strong>
+                    <span class="equipment-state equipment-state--available">
+                    Available
+                    </span>
+                </li>
+
+                <li>
+                    <strong>T2</strong>
+                    <span class="equipment-state equipment-state--unavailable">
+                    Unavailable
+                    </span>
+                </li>
+                </ul>
+            </div>
+
+            <!-- Native details work without JavaScript. -->
+            <details class="exercise-details">
+                <summary class="exercise-details__trigger">
+                View Session Details
+                </summary>
+
+                <div class="exercise-details__content">
+                <h3>Resistance Session · ARED</h3>
+
+                <p>
+                    This demonstration shows a scheduled resistance session.
+                    Specific exercises, loads, sets, and repetitions have
+                    not been assigned.
+                </p>
+
+                <dl class="exercise-prescription">
+                    <div>
+                    <dt>Objective</dt>
+                    <dd>Muscular and skeletal conditioning</dd>
+                    </div>
+
+                    <div>
+                    <dt>Equipment</dt>
+                    <dd>Advanced Resistive Exercise Device</dd>
+                    </div>
+
+                    <div>
+                    <dt>Prescription</dt>
+                    <dd>Not configured in this demonstration</dd>
+                    </div>
+                </dl>
+
+                <p>
+                    In an operational system, session instructions would
+                    come from the astronaut's reviewed exercise plan.
+                    Missing sessions do not automatically change the prescription.
+                </p>
+
+                <a
+                    class="exercise-source"
+                    href="https://www.nasa.gov/missions/station/iss-research/astronaut-exercise/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Learn about ISS exercise equipment at NASA
+                    (opens in a new tab)
+                </a>
+                </div>
+            </details>
+
+            <button
+                id="log-exercise-button"
+                class="exercise-log-button"
+                type="button"
+                aria-haspopup="dialog"
+                aria-controls="exercise-log-dialog"
+                aria-describedby="exercise-setup-note"
+                disabled
+            >
+                Log Exercise
+            </button>
+
+            <p id="exercise-setup-note" class="exercise-note">
+                Exercise logging will be available once the page script is connected.
+            </p>
+
+            <p class="health-disclaimer">
+                Illustrative schedule only. Not a personalized exercise prescription.
+            </p>
+            </section>
+        </div>
+
+        <!-- Right column: measurements and health overview -->
+        <div class="dashboard-column dashboard-column--right">
+            <section
+            class="health-card crew-card"
+            aria-labelledby="crew-title"
+            >
+            <header class="health-card__header">
+                <h2 id="crew-title">Crew Member: Alex Morgan</h2>
+                <p>Flight Engineer · Crew ID: AST-001</p>
+            </header>
+
+            <div class="crew-card__content">
+                <img
+                class="crew-card__hologram"
+                src="images/holograma_humano.png"
+                alt="Holographic illustration of the human body"
+                >
+
+                <div class="crew-measurements">
+                <h3>Latest Measurements</h3>
+
+                <dl class="measurement-list">
+                    <div class="measurement-list__item">
+                    <dt>Heart rate</dt>
+                    <dd>70 <span>bpm</span></dd>
+                    </div>
+
+                    <div class="measurement-list__item">
+                    <dt>Oxygen saturation</dt>
+                    <dd>98 <span>%</span></dd>
+                    </div>
+
+                    <div class="measurement-list__item">
+                    <dt>Respiratory rate</dt>
+                    <dd>16 <span>breaths/min</span></dd>
+                    </div>
+                </dl>
+
+                <!-- Decorative heartbeat animation, not a measured ECG. -->
+                <div class="heartbeat-monitor">
+                    <p class="heartbeat-monitor__label">
+                    Simulated heartbeat
+                    </p>
+
+                    <svg
+                    class="heartbeat-monitor__graphic"
+                    viewBox="0 0 600 100"
+                    aria-hidden="true"
+                    focusable="false"
+                    >
+                    <defs>
+                        <pattern
+                        id="heartbeat-grid"
+                        width="20"
+                        height="20"
+                        patternUnits="userSpaceOnUse"
+                        >
+                        <path
+                            d="M 20 0 H 0 V 20"
+                            fill="none"
+                            stroke="#00e5ed"
+                            stroke-opacity="0.12"
+                        />
+                        </pattern>
+                    </defs>
+
+                    <rect
+                        width="600"
+                        height="100"
+                        fill="url(#heartbeat-grid)"
+                    />
+
+                    <g class="heartbeat-monitor__trace">
+                        <path
+                        d="
+                            M 0 60
+                            H 30 L 40 53 L 50 60
+                            H 65 L 72 70 L 82 15 L 92 85 L 102 60
+                            H 120 Q 135 40 150 60 H 200
+
+                            H 230 L 240 53 L 250 60
+                            H 265 L 272 70 L 282 15 L 292 85 L 302 60
+                            H 320 Q 335 40 350 60 H 400
+
+                            H 430 L 440 53 L 450 60
+                            H 465 L 472 70 L 482 15 L 492 85 L 502 60
+                            H 520 Q 535 40 550 60 H 600
+
+                            H 630 L 640 53 L 650 60
+                            H 665 L 672 70 L 682 15 L 692 85 L 702 60
+                            H 720 Q 735 40 750 60 H 800
+                        "
+                        fill="none"
+                        stroke="#00efc3"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        />
+                    </g>
+                    </svg>
+
+                    <p class="heartbeat-monitor__caption">
+                    Illustrative waveform · Not a measured ECG
+                    </p>
+                </div>
+
+                <p class="measurement-note">
+                    Simulated readings · Mission day 24, 08:30
+                </p>
+                </div>
+            </div>
+            </section>
+
+            <!-- Simulated radiation dosimeter readings -->
+            <section
+            class="health-card radiation-card"
+            aria-labelledby="radiation-title"
+            >
+            <header class="health-card__header">
+                <h2 id="radiation-title">Radiation Exposure</h2>
+                <p>Personal dosimeter · Simulated data</p>
+            </header>
+
+            <div class="radiation-readings">
+                <div class="radiation-reading">
+                <span class="radiation-reading__label">
+                    Accumulated mission dose
+                </span>
+
+                <p class="radiation-reading__value">
+                    <span id="radiation-total">12.0</span>
+                    <span class="radiation-reading__unit">mSv</span>
+                </p>
+                </div>
+
+                <div class="radiation-reading">
+                <span class="radiation-reading__label">
+                    Dose in the last 24 hours
+                </span>
+
+                <p class="radiation-reading__value">
+                    <span id="radiation-daily">0.5</span>
+                    <span class="radiation-reading__unit">mSv</span>
+                </p>
+                </div>
+            </div>
+
+            <div class="radiation-status">
+                <strong id="radiation-status-label">
+                Assessment not configured
+                </strong>
+
+                <p>
+                Exposure readings require mission-specific monitoring
+                criteria before a health status can be assigned.
+                </p>
+            </div>
+
+            <p class="radiation-card__updated">
+                Last update: Mission day 24, 08:30
+            </p>
+
+            <details class="radiation-details">
+                <summary>About These Readings</summary>
+
+                <div class="radiation-details__content">
+                <p>
+                    Accumulated mission dose represents exposure recorded
+                    since the start of the mission.
+                </p>
+
+                <p>
+                    The 24-hour value represents exposure recorded during
+                    the latest complete 24-hour period.
+                </p>
+
+                <p>
+                    Values are illustrative and are not live measurements.
+                    No approved monitoring limits are configured in this demo.
+                </p>
+                </div>
+            </details>
+            </section>
+
+            <section
+            class="health-card overview-card"
+            aria-labelledby="overview-title"
+            >
+            <header class="health-card__header">
+                <h2 id="overview-title">Health Status</h2>
+                <p>Illustrative scenario · Not calculated from live readings</p>
+            </header>
+
+            <div class="health-summary health-summary--warning">
+                <span class="health-summary__icon" aria-hidden="true">!</span>
+
+                <div>
+                <h3>Review needed</h3>
+                <p>Check the highlighted indicator below.</p>
+                </div>
+            </div>
+
+            <ul class="indicator-grid">
+                <li class="indicator-tile indicator-tile--normal">
+                <span class="indicator-tile__name">Heart rate</span>
+                <strong class="indicator-tile__status">
+                    <span aria-hidden="true">✓</span>
+                    Within range
+                </strong>
+                </li>
+
+                <li class="indicator-tile indicator-tile--normal">
+                <span class="indicator-tile__name">Oxygen saturation</span>
+                <strong class="indicator-tile__status">
+                    <span aria-hidden="true">✓</span>
+                    Within range
+                </strong>
+                </li>
+
+                <li class="indicator-tile indicator-tile--warning">
+                <span class="indicator-tile__name">Fatigue</span>
+                <strong class="indicator-tile__status">
+                    <span aria-hidden="true">!</span>
+                    Needs review
+                </strong>
+                </li>
+
+                <li class="indicator-tile indicator-tile--missing">
+                <span class="indicator-tile__name">Exercise notes</span>
+                <strong class="indicator-tile__status">
+                    <span aria-hidden="true">—</span>
+                    No data
+                </strong>
+                </li>
+            </ul>
+
+            <details class="health-details">
+                <summary class="health-details__trigger">
+                View Details &amp; Activities
+                </summary>
+
+                <div class="health-details__content">
+                <h3>Why is fatigue highlighted?</h3>
+
+                <p>
+                    This prototype uses a preset warning to demonstrate
+                    the interface. It is not derived from the displayed
+                    fatigue score.
+                </p>
+
+                <h3>Next Steps</h3>
+
+                <p>
+                    In the completed application, this area will explain
+                    the rule triggered, the records involved, and the
+                    applicable reviewed procedure.
+                </p>
+
+                <h3>Activity Library</h3>
+
+                <p>
+                    Activity descriptions and references will be available
+                    here. Personalized exercise recommendations are not
+                    implemented.
+                </p>
+                </div>
+            </details>
+
+            <p class="health-disclaimer">
+                Demonstration states only. Monitoring ranges and procedures
+                require expert validation before real use.
+            </p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="dashboard-footer">
+      <p>Astro_Bytes · Crew Health Portal</p>
+      <p>Simulated data · Independent Space Apps project</p>
+    </footer>
+  </div>
+
+  <!-- Exercise logging dialog -->
+    <dialog
+    id="exercise-log-dialog"
+    class="exercise-dialog"
+    aria-labelledby="exercise-log-title"
+    aria-describedby="exercise-log-description"
+    >
+    <header class="exercise-dialog__header">
+        <h2 id="exercise-log-title">Log Exercise</h2>
+
+        <form method="dialog">
+        <button
+            class="exercise-dialog__close"
+            type="submit"
+            aria-label="Close exercise log"
+        >
+            Close
+        </button>
+        </form>
+    </header>
+
+    <p id="exercise-log-description">
+        Record an activity you completed. This form does not
+        prescribe or authorize an exercise session.
+    </p>
+
+    <form id="exercise-log-form" class="exercise-log-form">
+        <label for="exercise-session">Scheduled session</label>
+
+        <select
+        id="exercise-session"
+        name="session"
+        required
+        >
+        <option value="">Select a session</option>
+        <option value="day24-cevis">Aerobic Session · CEVIS</option>
+        <option value="day24-ared">Resistance Session · ARED</option>
+        </select>
+
+        <label for="exercise-date">Session date</label>
+
+        <input
+        id="exercise-date"
+        name="date"
+        type="date"
+        required
+        >
+
+        <label for="exercise-duration">Duration in minutes</label>
+
+        <input
+        id="exercise-duration"
+        name="duration"
+        type="number"
+        min="1"
+        max="1440"
+        step="1"
+        placeholder="Enter completed minutes"
+        required
+        >
+
+        <label for="exercise-effort">Perceived effort</label>
+
+        <select
+        id="exercise-effort"
+        name="effort"
+        required
+        >
+        <option value="">Select perceived effort</option>
+        <option value="1">1 — Very light</option>
+        <option value="2">2 — Light</option>
+        <option value="3">3 — Moderate</option>
+        <option value="4">4 — Hard</option>
+        <option value="5">5 — Very hard</option>
+        </select>
+
+        <label for="exercise-notes">Notes (optional)</label>
+
+        <textarea
+        id="exercise-notes"
+        name="notes"
+        rows="4"
+        maxlength="2000"
+        placeholder="Add observations about your session..."
+        ></textarea>
+
+        <button
+        id="save-exercise-button"
+        class="exercise-log-button"
+        type="submit"
+        disabled
+        >
+        Save Exercise
+        </button>
+
+        <p
+        id="exercise-log-message"
+        class="exercise-note"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        ></p>
+    </form>
+    </dialog>
+</body>
+</html>
