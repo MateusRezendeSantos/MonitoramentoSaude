@@ -1,0 +1,1175 @@
+<!-- This code was developed with the assistance of artificial intelligence, using GPT and Claude. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Your personalized Astro_Bytes dashboard for mission health, activities, and memories."
+  >
+
+  <title>Dashboard | Astro_Bytes Crew Health Portal</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="assets/images/astro_bytes_logo.png"
+  >
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+
+  <script src="assets/js/space-effects.js" defer></script>
+  <script type="module" src="assets/js/dashboard.js"></script>
+  <script src="assets/js/heart-monitor.js" defer></script>
+  <script type="module" src="assets/js/daily-care.js"></script>
+  <script src="assets/js/dashboard-preview.js" defer></script>
+  <script src="assets/js/crew-session.js" defer></script>
+  <script type="module" src="assets/js/health-data.js"></script>
+  <script type="module" src="assets/js/sleep-data.js"></script>
+  <script type="module" src="assets/js/radiation-data.js"></script>
+  <script type="module" src="assets/js/exercise-data.js"></script>
+  <script type="module" src="assets/js/health-status.js"></script>
+<link rel="stylesheet" href="assets/css/space-weather.css">
+<script src="assets/js/space-weather.js" defer></script>
+</head>
+
+<body class="health-body dashboard-body">
+  <div class="health-background" aria-hidden="true">
+    <img src="assets/images/background_segunda_tela.png" alt="">
+  </div>
+
+  <canvas id="space-effects" aria-hidden="true"></canvas>
+
+  <div class="health-page dashboard-page">
+    <header class="dashboard-header">
+  <nav class="dashboard-nav" aria-label="Main navigation">
+    <a class="dashboard-nav__link" href="dashboard.html" aria-current="page">Dashboard</a>
+    <a class="dashboard-nav__link" href="health.html">Health</a>
+    <a class="dashboard-nav__link" href="register.html">Record Measurements</a>
+    <a class="dashboard-nav__link" href="companion.html">Companion</a>
+    <a class="dashboard-nav__link" href="memories.html">Memories</a>
+    <a class="dashboard-nav__link" href="reminders.html">Reminders</a>
+  </nav>
+  <a class="dashboard-exit" href="index.html" data-session-exit>Sign Out</a>
+</header>
+
+    <main
+      id="main-content"
+      class="personal-dashboard"
+      aria-labelledby="dashboard-title"
+    >
+      <header class="dashboard-welcome">
+        <div>
+          <h1 id="dashboard-title">Your Mission Dashboard</h1>
+          <p>
+            Welcome, <span data-crew-name>Loading profile...</span>.
+            Keep your essentials close.
+          </p>
+
+          <p>
+            <span data-crew-role></span>
+            · Crew ID: <span data-crew-code></span>
+          </p>
+        </div>
+
+        <div class="dashboard-tools">
+          <p class="mission-counter">
+            <strong id="mission-days">24</strong>
+            <span>days in space</span>
+          </p>
+
+          <button
+            id="customize-dashboard-button"
+            class="dashboard-customize-button"
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="dashboard-settings-dialog"
+            disabled
+          >
+            Customize Dashboard
+          </button>
+        </div>
+      </header>
+
+      <p class="dashboard-demo-notice">
+        Demonstration project · Health widgets load saved crew records.
+        Mission duration remains illustrative.
+      </p>
+
+      <p id="dashboard-empty" class="dashboard-empty" hidden>
+        No widgets selected. Use Customize Dashboard to add your essentials.
+      </p>
+
+      <!-- Default widget order: radiation, exercise, companion, journal, memories. -->
+      <div id="dashboard-widgets" class="dashboard-widget-grid">
+
+        <!-- Radiation widget -->
+        <section
+          id="widget-radiation"
+          class="health-card dashboard-widget"
+          data-widget="radiation"
+          aria-labelledby="dashboard-radiation-title"
+        >
+            <header class="health-card__header">
+                <h2 id="dashboard-radiation-title">Radiation Exposure</h2>
+                <p>Personal dosimeter · Saved readings</p>
+            </header>
+
+            <div class="radiation-readings">
+                <div class="radiation-reading">
+                <span class="radiation-reading__label">
+                    Accumulated mission dose
+                </span>
+
+                <p class="radiation-reading__value">
+                    <span id="radiation-total">--</span>
+                    <span class="radiation-reading__unit">--</span>
+                </p>
+                </div>
+
+                <div class="radiation-reading">
+                <span class="radiation-reading__label">
+                    Dose in the last 24 hours
+                </span>
+
+                <p class="radiation-reading__value">
+                    <span id="radiation-daily">0.5</span>
+                    <span class="radiation-reading__unit">mSv</span>
+                </p>
+                </div>
+            </div>
+
+            <div class="radiation-status">
+                <strong id="radiation-status-label">
+                Assessment not configured
+                </strong>
+
+                <p>
+                Exposure readings require mission-specific monitoring
+                criteria before a health status can be assigned.
+                </p>
+            </div>
+
+            <p
+                id="radiation-updated"
+                class="radiation-card__updated"
+                role="status"
+                aria-live="polite"
+            >
+                Loading saved radiation readings...
+            </p>
+
+            <details class="radiation-details">
+                <summary>About These Readings</summary>
+
+                <div class="radiation-details__content">
+                    <p>
+                        Mission dose is the accumulated total saved for this crew member.
+                    </p>
+
+                    <p>
+                        The 24-hour value adds readings recorded during the last 24 hours.
+                        Each entry represents an additional dose since the previous reading.
+                    </p>
+
+                    <p>
+                        Readings are manually entered from an external dosimeter.
+                        No approved exposure assessment limits are configured.
+                    </p>
+                </div>
+            </details>
+            
+</section>
+
+        <!-- Exercise plan widget -->
+        <section
+          id="widget-exercise"
+          class="health-card dashboard-widget"
+          data-widget="exercise"
+          aria-labelledby="dashboard-exercise-title"
+        >
+            <header class="health-card__header">
+                <h2 id="dashboard-exercise-title">Exercise Plan</h2>
+                <p>Today's exercise plan</p>
+            </header>
+
+            <p class="exercise-progress">
+                <strong id="exercise-completed-count">--</strong>
+                planned sessions logged
+            </p>
+
+            <ul id="exercise-session-list" class="exercise-session-list">
+                <li>Loading planned sessions...</li>
+            </ul>
+
+            <div class="exercise-equipment">
+                <h3>Equipment Availability</h3>
+
+                <p class="exercise-equipment__note">
+                    Availability configured by the mission team.
+                </p>
+
+                <ul id="exercise-equipment-list" class="exercise-equipment__list">
+                    <li>Loading equipment...</li>
+                </ul>
+            </div>
+
+            <!-- Native details work without JavaScript. -->
+            <details class="exercise-details">
+                <summary class="exercise-details__trigger">
+                View Session Details
+                </summary>
+
+                <div class="exercise-details__content">
+                <h3>Resistance Session · ARED</h3>
+
+                <p>
+                    This demonstration shows a scheduled resistance session.
+                    Specific exercises, loads, sets, and repetitions have
+                    not been assigned.
+                </p>
+
+                <dl class="exercise-prescription">
+                    <div>
+                    <dt>Objective</dt>
+                    <dd>Muscular and skeletal conditioning</dd>
+                    </div>
+
+                    <div>
+                    <dt>Equipment</dt>
+                    <dd>Advanced Resistive Exercise Device</dd>
+                    </div>
+
+                    <div>
+                    <dt>Prescription</dt>
+                    <dd>Not configured in this demonstration</dd>
+                    </div>
+                </dl>
+
+                <p>
+                    In an operational system, session instructions would
+                    come from the astronaut's reviewed exercise plan.
+                    Missing sessions do not automatically change the prescription.
+                </p>
+
+                <a
+                    class="exercise-source"
+                    href="https://www.nasa.gov/missions/station/iss-research/astronaut-exercise/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Learn about ISS exercise equipment at NASA
+                    (opens in a new tab)
+                </a>
+                </div>
+            </details>
+
+            <button
+                id="log-exercise-button"
+                class="exercise-log-button"
+                type="button"
+                aria-haspopup="dialog"
+                aria-controls="exercise-log-dialog"
+                aria-describedby="exercise-setup-note"
+                disabled
+            >
+                Log Exercise
+            </button>
+
+            <p id="exercise-setup-note" class="exercise-note">
+                Exercise logging will be available once the page script is connected.
+            </p>
+
+            <p class="health-disclaimer">
+                Illustrative schedule only. Not a personalized exercise prescription.
+            </p>
+            
+</section>
+
+        <!-- Companion widget -->
+        <section
+          id="widget-companion"
+          class="health-card dashboard-widget"
+          data-widget="companion"
+          aria-labelledby="dashboard-companion-title"
+        >
+          <header class="health-card__header">
+            <h2 id="dashboard-companion-title">Rise Companion</h2>
+            <p>A little company for your mission.</p>
+          </header>
+
+          <div class="dashboard-pet">
+            <img
+              id="dashboard-pet-image"
+              class="dashboard-pet__image"
+              src="assets/images/rise_pet_normal.png"
+              alt="Rise smiling"
+            >
+
+            <img
+              id="dashboard-pet-tie"
+              class="dashboard-pet__accessory dashboard-pet__accessory--tie"
+              src="assets/images/rise_tie.png"
+              alt=""
+              hidden
+            >
+
+            <img
+              id="dashboard-pet-helmet"
+              class="dashboard-pet__accessory dashboard-pet__accessory--helmet"
+              src="assets/images/rise_helmet.png"
+              alt=""
+              hidden
+            >
+          </div>
+
+          <div class="mini-pet-shadow" aria-hidden="true"></div>
+<p
+            id="dashboard-pet-message"
+            role="status"
+            aria-live="polite"
+          >
+            Ready for a little break?
+          </p>
+
+          <div class="mini-pet-actions">
+  <button id="dashboard-cheer-button" class="dashboard-action-button" type="button">Cheer Up</button>
+  <button id="dashboard-rest-button" class="dashboard-action-button" type="button">Rest</button>
+</div>
+<div class="dashboard-widget__actions">
+            <button
+              id="dashboard-pet-button"
+              class="dashboard-action-button"
+              type="button"
+              disabled
+            >
+              Pet Rise
+            </button>
+
+            <a class="dashboard-widget__link" href="companion.html">
+              Visit Companion
+            </a>
+          </div>
+        </section>
+
+        <!-- Journal widget -->
+        <section
+          id="widget-journal"
+          class="health-card dashboard-widget"
+          data-widget="journal"
+          aria-labelledby="dashboard-journal-title"
+        >
+          <header class="health-card__header">
+            <h2 id="dashboard-journal-title">Journal</h2>
+            <p>A moment to reflect on your day.</p>
+          </header>
+
+          <form id="dashboard-journal-form" class="dashboard-widget-form">
+            <label for="dashboard-journal-date">Entry date</label>
+
+            <input
+              id="dashboard-journal-date"
+              name="entryDate"
+              type="date"
+              required
+              disabled
+            >
+
+            <label for="dashboard-journal-text">Your entry</label>
+
+            <textarea
+              id="dashboard-journal-text"
+              name="entryText"
+              rows="5"
+              maxlength="10000"
+              placeholder="Dear journal, today..."
+              required
+              disabled
+            ></textarea>
+
+            <button
+              id="dashboard-save-journal-button"
+              class="dashboard-action-button"
+              type="submit"
+              disabled
+            >
+              Save Entry
+            </button>
+
+            <p
+              id="dashboard-journal-message"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </form>
+
+          <a class="dashboard-widget__link" href="reminders.html#journal-title">
+            Open Journal &amp; History
+          </a>
+        </section>
+
+        <!-- Featured memories widget -->
+        <section
+          id="widget-memories"
+          class="health-card dashboard-widget"
+          data-widget="memories"
+          aria-labelledby="dashboard-memories-title"
+        >
+          <header class="health-card__header">
+            <h2 id="dashboard-memories-title">Featured Memories</h2>
+            <p>A piece of home, close by.</p>
+          </header>
+
+          <!-- No personal photo is selected automatically. -->
+          <div
+            id="dashboard-featured-photos"
+            class="dashboard-featured-photos"
+          ></div>
+
+          <p id="dashboard-memories-empty" class="dashboard-widget__notice">
+            Choose one photo to start, or feature up to three
+            using Customize Dashboard.
+          </p>
+
+          <a class="dashboard-widget__link" href="memories.html">
+            Open Memories
+          </a>
+        </section>
+
+        <!-- Optional sleep widget -->
+        <section
+          id="widget-sleep"
+          class="health-card dashboard-widget"
+          data-widget="sleep"
+          aria-labelledby="dashboard-sleep-title"
+          hidden
+        >
+                <header class="health-card__header">
+                    <h2 id="dashboard-sleep-title">Sleep Overview</h2>
+                    <p>Your four most recent sleep records</p>
+                </header>
+
+                <div class="sleep-card__content">
+                    <figure class="sleep-chart">
+                    <svg
+                        class="sleep-chart__graphic"
+                        viewBox="0 0 360 180"
+                        role="img"
+                        aria-labelledby="sleep-chart-title sleep-chart-description"
+                    >
+                        <title id="sleep-chart-title">Recent sleep duration</title>
+
+                        <desc id="sleep-chart-description">
+                        Loading saved sleep records.
+                        </desc>
+
+                        <g class="chart-grid" stroke="currentColor" opacity="0.25">
+                        <line x1="45" y1="25" x2="335" y2="25"/>
+                        <line x1="45" y1="65" x2="335" y2="65"/>
+                        <line x1="45" y1="105" x2="335" y2="105"/>
+                        <line x1="45" y1="145" x2="335" y2="145"/>
+                        </g>
+
+                        <g
+                        id="sleep-y-labels"
+                        class="chart-labels"
+                        fill="currentColor"
+                        font-size="12"
+                        >
+                        <text x="2" y="29">12 h</text>
+                        <text x="2" y="69">8 h</text>
+                        <text x="2" y="109">4 h</text>
+                        <text x="2" y="149">0 h</text>
+                        </g>
+
+                        <g
+                        id="sleep-date-labels"
+                        class="chart-labels"
+                        fill="currentColor"
+                        font-size="11"
+                        ></g>
+
+                        <polyline
+                        id="sleep-data-line"
+                        class="chart-line"
+                        points=""
+                        fill="none"
+                        stroke="#00e5ed"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        />
+
+                        <g id="sleep-data-points" fill="#00e5ed"></g>
+                    </svg>
+
+                    <figcaption>Hours slept by recorded date</figcaption>
+                    </figure>
+
+                    <div class="sleep-summary">
+                    <p class="sleep-summary__label">Last recorded sleep</p>
+                    <p id="sleep-duration-value" class="sleep-summary__value">--</p>
+                    <p id="sleep-record-date" class="sleep-summary__date">Loading...</p>
+                    </div>
+                </div>
+            
+</section>
+
+        <!-- Optional heart rate widget -->
+        <section
+          id="widget-heart-rate"
+          class="health-card dashboard-widget"
+          data-widget="heart-rate"
+          aria-labelledby="dashboard-heart-title"
+          hidden
+        >
+          <header class="health-card__header">
+            <h2 id="dashboard-heart-title">Heart Rate</h2>
+            <p>Latest saved reading</p>
+          </header>
+
+          <p class="dashboard-metric-value">
+            <span id="heart-rate-value">--</span> bpm
+          </p>
+
+          
+<div class="heartbeat-monitor">
+  <p class="heartbeat-monitor__label">Heartbeat visualization</p>
+  <canvas id="heartbeat-canvas" class="heartbeat-canvas" role="img"
+    aria-label="Illustrative heartbeat waveform, not a measured ECG"></canvas>
+  <p class="heartbeat-monitor__caption">BPM-synchronized illustration · Not a measured ECG</p>
+</div>
+<a class="dashboard-widget__link" href="health.html#crew-title">
+            View Measurements
+          </a>
+        <p id="measurement-status" class="measurement-note" role="status">Loading saved measurements...</p></section>
+
+        <!-- Optional oxygen saturation widget -->
+        <section
+          id="widget-oxygen"
+          class="health-card dashboard-widget"
+          data-widget="oxygen"
+          aria-labelledby="dashboard-oxygen-title"
+          hidden
+        >
+          <header class="health-card__header">
+            <h2 id="dashboard-oxygen-title">Oxygen Saturation</h2>
+            <p>Latest saved reading</p>
+          </header>
+
+          <p class="dashboard-metric-value">
+            <span id="spo2-value">--</span> %
+          </p>
+
+          <svg class="mini-signal" viewBox="0 0 300 65" aria-hidden="true">
+<path d="M0 45 C15 45 15 15 30 15 S45 45 60 45 S75 15 90 15 S105 45 120 45 S135 15 150 15 S165 45 180 45 S195 15 210 15 S225 45 240 45 S255 15 270 15 S285 45 300 45" fill="none" stroke="#00e5ed" stroke-width="2"/>
+</svg><p class="dashboard-widget__notice">Decorative illustration · Not a measured signal</p><a class="dashboard-widget__link" href="health.html#crew-title">
+            View Measurements
+          </a>
+        </section>
+
+        <!-- Optional respiratory rate widget -->
+        <section
+          id="widget-respiratory"
+          class="health-card dashboard-widget"
+          data-widget="respiratory"
+          aria-labelledby="dashboard-respiratory-title"
+          hidden
+        >
+          <header class="health-card__header">
+            <h2 id="dashboard-respiratory-title">Respiratory Rate</h2>
+            <p>Latest saved reading</p>
+          </header>
+
+          <p class="dashboard-metric-value">
+            <span id="resp-rate-value">--</span> breaths/min
+          </p>
+
+          <svg class="mini-signal" viewBox="0 0 300 65" aria-hidden="true">
+<path d="M0 45 C15 45 15 15 30 15 S45 45 60 45 S75 15 90 15 S105 45 120 45 S135 15 150 15 S165 45 180 45 S195 15 210 15 S225 45 240 45 S255 15 270 15 S285 45 300 45" fill="none" stroke="#00e5ed" stroke-width="2"/>
+</svg><p class="dashboard-widget__notice">Decorative illustration · Not a measured signal</p><a class="dashboard-widget__link" href="health.html#crew-title">
+            View Measurements
+          </a>
+        </section>
+
+        <!-- Optional daily check-in widget -->
+        <section
+          id="widget-check-in"
+          class="health-card dashboard-widget"
+          data-widget="check-in"
+          aria-labelledby="dashboard-check-in-title"
+          hidden
+        >
+          <header class="health-card__header">
+            <h2 id="dashboard-check-in-title">Daily Check-In</h2>
+            <p>Latest saved check-in</p>
+          </header>
+
+          <dl class="dashboard-metrics">
+            <div>
+              <dt>Reported fatigue</dt>
+              <dd id="fatigue-value">--</dd>
+            </div>
+
+            <div>
+              <dt>Sleep quality</dt>
+              <dd id="sleep-quality-value">--</dd>
+            </div>
+
+            <div>
+              <dt>Exercise logged</dt>
+              <dd id="exercise-value">--</dd>
+            </div>
+          </dl><p id="check-in-status" class="measurement-note" role="status">Loading saved check-in...</p>
+
+          <a class="dashboard-widget__link" href="health.html#routine-title">
+            Open Daily Check-In
+          </a>
+        </section>
+
+        <!-- Optional health status widget -->
+        <section
+          id="widget-health-status"
+          class="health-card dashboard-widget"
+          data-widget="health-status"
+          aria-labelledby="dashboard-status-title"
+          hidden
+        >
+                <header class="health-card__header">
+                    <h2 id="dashboard-status-title">Health Status</h2>
+                    <p>Saved readings compared with configured demonstration ranges</p>
+                </header>
+
+                <div
+                    id="health-summary"
+                    class="health-summary health-summary--missing"
+                    role="status"
+                    aria-live="polite"
+                >
+                    <span id="health-summary-icon" class="health-summary__icon">—</span>
+
+                    <div>
+                    <h3 id="health-summary-title">Loading Status</h3>
+                    <p id="health-summary-text">Reading saved measurements...</p>
+                    </div>
+                </div>
+
+                <ul id="health-indicator-grid" class="indicator-grid"></ul>
+
+                <details class="health-details">
+                    <summary class="health-details__trigger">
+                    View Details &amp; Activities
+                    </summary>
+
+                    <div class="health-details__content">
+                    <h3>Why These States Are Shown</h3>
+                    <ul id="health-status-reasons"></ul>
+
+                    <p>
+                        These states use the latest saved records and configured
+                        demonstration ranges. They do not confirm your current
+                        health or provide a diagnosis.
+                    </p>
+
+                    <a href="health.html#exercise-title">View Exercise Plan</a>
+                    </div>
+                </details>
+
+                <p id="health-status-updated" class="health-disclaimer"></p>
+
+                <p class="health-disclaimer">
+                    Demonstration criteria only. Clinical validation is required
+                    before real use.
+                </p>
+            
+</section>
+
+        <!-- Optional quick notes widget -->
+        <section
+          id="widget-notes"
+          class="health-card dashboard-widget"
+          data-widget="notes"
+          aria-labelledby="dashboard-notes-title"
+          hidden
+        >
+          <header class="health-card__header">
+            <h2 id="dashboard-notes-title">Quick Notes</h2>
+            <p>Your recent saved notes.</p>
+          </header>
+
+          <ul id="dashboard-notes-list" class="dashboard-notes-list"></ul>
+
+          <p id="dashboard-notes-empty" class="dashboard-widget__notice">
+            Saved notes will appear here once data loading is connected.
+          </p>
+
+          <a class="dashboard-widget__link" href="reminders.html#notes-title">
+            Manage Notes
+          </a>
+        </section>
+
+        <!-- Optional tasks widget -->
+        <section
+          id="widget-tasks"
+          class="health-card dashboard-widget"
+          data-widget="tasks"
+          aria-labelledby="dashboard-tasks-title"
+          hidden
+        >
+          <header class="health-card__header">
+            <h2 id="dashboard-tasks-title">Tasks</h2>
+            <p>Your personal to-do list.</p>
+          </header>
+
+          <p id="dashboard-task-progress">Task summary not loaded yet.</p>
+
+          <ul id="dashboard-tasks-list" class="dashboard-tasks-list"></ul>
+
+          <p id="dashboard-tasks-empty" class="dashboard-widget__notice">
+            Saved tasks will appear here once data loading is connected.
+          </p>
+
+          <a class="dashboard-widget__link" href="reminders.html#tasks-title">
+            Manage Tasks
+          </a>
+        </section>
+<section id="widget-mood" data-widget="mood" hidden class="health-card dashboard-widget mood-card" aria-labelledby="mood-title">
+        <header class="health-card__header">
+          <h2 id="mood-title">How Are You Feeling Today?</h2>
+          <p>A personal check-in, not a clinical assessment.</p>
+        </header>
+
+        <form id="mood-form">
+          <fieldset class="mood-options">
+            <legend>Choose the feeling that fits best</legend>
+
+            <label>
+              <input type="radio" name="mood" value="great" required>
+              <span>😄 Great</span>
+            </label>
+
+            <label>
+              <input type="radio" name="mood" value="good">
+              <span>🙂 Good</span>
+            </label>
+
+            <label>
+              <input type="radio" name="mood" value="okay">
+              <span>😐 Okay</span>
+            </label>
+
+            <label>
+              <input type="radio" name="mood" value="low">
+              <span>😔 Low</span>
+            </label>
+
+            <label>
+              <input type="radio" name="mood" value="stressed">
+              <span>😣 Stressed</span>
+            </label>
+          </fieldset>
+
+          <label for="mood-note">Anything you would like to add? (optional)</label>
+
+          <textarea
+            id="mood-note"
+            rows="2"
+            maxlength="1000"
+            placeholder="Write a short reflection..."
+          ></textarea>
+
+          <button class="reminder-button reminder-button--primary" type="submit">
+            Save Today's Mood
+          </button>
+
+          <p id="mood-message" role="status" aria-live="polite"></p>
+        </form>
+
+        <details class="mood-history">
+          <summary>View Mood History</summary>
+          <ul id="mood-history-list"></ul>
+        </details>
+
+        <p class="field-help">
+          Demo records are stored in this browser and are not private accounts.
+          Saving again updates today's check-in.
+        </p>
+      </section>
+<section id="widget-meals" data-widget="meals" hidden
+                class="health-card dashboard-widget meal-card"
+                aria-labelledby="meal-title"
+                >
+                <header class="health-card__header">
+                    <h2 id="meal-title">Meal Check-In</h2>
+                    <p>Remember to follow your mission meal schedule.</p>
+                </header>
+
+                <p>
+                    Taking time for a meal? Record it here to keep track of your day.
+                </p>
+
+                <form id="meal-form" class="meal-options">
+                    <label>
+                    <input type="checkbox" name="meal" value="breakfast">
+                    Breakfast
+                    </label>
+
+                    <label>
+                    <input type="checkbox" name="meal" value="lunch">
+                    Lunch
+                    </label>
+
+                    <label>
+                    <input type="checkbox" name="meal" value="dinner">
+                    Dinner
+                    </label>
+
+                    <button class="exercise-log-button" type="submit">
+                    Save Meal Check-In
+                    </button>
+                </form>
+
+                <p id="meal-message" class="exercise-note" role="status" aria-live="polite"></p>
+
+                <p class="health-disclaimer">
+                    Self-reported meals only. This checklist does not assess
+                    nutritional adequacy or send notifications.
+                </p>
+            </section>
+<section id="widget-space-weather" data-widget="space-weather" hidden
+            class="health-card dashboard-widget space-weather-card"
+            aria-labelledby="space-weather-title"
+            >
+            <header class="health-card__header">
+                <h2 id="space-weather-title">Space Weather</h2>
+                <p>Solar activity reported by NASA DONKI, last 7 days</p>
+            </header>
+
+            <p
+                id="space-weather-status"
+                class="space-weather__status"
+                data-state="loading"
+                role="status"
+                aria-live="polite"
+            >
+                Loading NASA space weather data...
+            </p>
+
+            <ul id="space-weather-list" class="space-weather__list"></ul>
+
+            <p class="space-weather__note">
+                Source: NASA DONKI (Space Weather Database Of Notifications,
+                Knowledge, Information). Informational only, not a medical
+                or operational alert.
+            </p>
+            </section>
+      </div>
+
+      <p
+        id="dashboard-message"
+        class="dashboard-message"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      ></p>
+
+      <p id="dashboard-setup-notice" class="dashboard-demo-notice">
+        Layout customization and widget interactions will be available
+        once the dashboard script is connected.
+      </p>
+
+      <noscript>
+        <p class="dashboard-demo-notice">
+          Enable JavaScript to customize your dashboard.
+        </p>
+      </noscript>
+    </main>
+
+    <footer class="dashboard-footer">
+      <p>Astro_Bytes · Crew Health Portal</p>
+      <p>Independent Space Apps project · Demonstration only</p>
+    </footer>
+  </div>
+
+  <!-- Dashboard customization -->
+  <dialog
+    id="dashboard-settings-dialog"
+    class="dashboard-settings-dialog"
+    aria-labelledby="dashboard-settings-title"
+    aria-describedby="dashboard-settings-description"
+  >
+    <header class="dashboard-settings-header">
+      <h2 id="dashboard-settings-title">Customize Dashboard</h2>
+
+      <form method="dialog">
+        <button
+          class="dashboard-dialog-close"
+          type="submit"
+          aria-label="Close dashboard settings"
+        >
+          Close
+        </button>
+      </form>
+    </header>
+
+    <p id="dashboard-settings-description">
+      Choose the widgets you want on your home screen.
+      Changes apply when you select Save Layout.
+    </p>
+
+    <form id="dashboard-settings-form">
+      <fieldset class="widget-options">
+        <legend>Health</legend>
+<label><input type="checkbox" name="widgets" value="space-weather">Space Weather</label>
+<label><input type="checkbox" name="widgets" value="mood">Mood Check-In</label>
+<label><input type="checkbox" name="widgets" value="meals">Meal Check-In</label>
+
+        <label>
+          <input type="checkbox" name="widgets" value="sleep">
+          Sleep Overview
+        </label>
+
+        <label>
+          <input type="checkbox" name="widgets" value="heart-rate">
+          Heart Rate
+        </label>
+
+        <label>
+          <input type="checkbox" name="widgets" value="oxygen">
+          Oxygen Saturation
+        </label>
+
+        <label>
+          <input type="checkbox" name="widgets" value="respiratory">
+          Respiratory Rate
+        </label>
+
+        <label>
+          <input type="checkbox" name="widgets" value="radiation" checked>
+          Radiation Exposure
+        </label>
+
+        <label>
+          <input type="checkbox" name="widgets" value="check-in">
+          Daily Check-In
+        </label>
+
+        <label>
+          <input type="checkbox" name="widgets" value="exercise" checked>
+          Exercise Plan
+        </label>
+
+        <label>
+          <input type="checkbox" name="widgets" value="health-status">
+          Health Status
+        </label>
+      </fieldset>
+
+      <fieldset class="widget-options">
+        <legend>Companion</legend>
+
+        <label>
+          <input type="checkbox" name="widgets" value="companion" checked>
+          Rise Companion
+        </label>
+      </fieldset>
+
+      <fieldset class="widget-options">
+        <legend>Reminders</legend>
+
+        <label>
+          <input type="checkbox" name="widgets" value="journal" checked>
+          Journal
+        </label>
+
+        <label>
+          <input type="checkbox" name="widgets" value="notes">
+          Quick Notes
+        </label>
+
+        <label>
+          <input type="checkbox" name="widgets" value="tasks">
+          Tasks
+        </label>
+      </fieldset>
+
+      <fieldset class="widget-options">
+        <legend>Memories</legend>
+
+        <label>
+          <input type="checkbox" name="widgets" value="memories" checked>
+          Featured Memories
+        </label>
+
+        <label for="featured-photo-count">Number of featured photos</label>
+
+        <select id="featured-photo-count" name="photoCount">
+          <option value="1" selected>1 photo</option>
+          <option value="2">2 photos</option>
+          <option value="3">3 photos</option>
+        </select>
+
+        <p id="featured-photo-help">
+          Choose photos from your saved Memories collection.
+          Your selection stays on this device for the demo.
+        </p>
+
+        <!-- JavaScript will generate selectable photo previews here. -->
+        <div
+          id="featured-photo-options"
+          class="featured-photo-options"
+          role="group"
+          aria-label="Choose featured memories"
+          aria-describedby="featured-photo-help"
+        ></div>
+
+        <p id="featured-photo-options-empty">
+          Photo selection will be available once the dashboard
+          script is connected.
+        </p>
+      </fieldset>
+
+      <div class="dashboard-settings-actions">
+        <button
+          id="restore-dashboard-defaults"
+          class="dashboard-secondary-button"
+          type="button"
+          disabled
+        >
+          Restore Defaults
+        </button>
+
+        <button
+          id="cancel-dashboard-settings"
+          class="dashboard-secondary-button"
+          type="button"
+          disabled
+        >
+          Cancel
+        </button>
+
+        <button
+          id="save-dashboard-layout"
+          class="dashboard-action-button"
+          type="submit"
+          disabled
+        >
+          Save Layout
+        </button>
+      </div>
+
+      <p
+        id="dashboard-settings-message"
+        role="status"
+        aria-live="polite"
+      ></p>
+    </form>
+  </dialog>
+<dialog
+    id="exercise-log-dialog"
+    class="exercise-dialog"
+    aria-labelledby="exercise-log-title"
+    aria-describedby="exercise-log-description"
+    >
+    <header class="exercise-dialog__header">
+        <h2 id="exercise-log-title">Log Exercise</h2>
+
+        <form method="dialog">
+        <button
+            class="exercise-dialog__close"
+            type="submit"
+            aria-label="Close exercise log"
+        >
+            Close
+        </button>
+        </form>
+    </header>
+
+    <p id="exercise-log-description">
+        Record an activity you completed. This form does not
+        prescribe or authorize an exercise session.
+    </p>
+
+    <form id="exercise-log-form" class="exercise-log-form">
+        <label for="exercise-session">Scheduled session</label>
+
+        <select
+        id="exercise-session"
+        name="session"
+        required
+        >
+        <option value="">Select a session</option>
+        <option value="day24-cevis">Aerobic Session · CEVIS</option>
+        <option value="day24-ared">Resistance Session · ARED</option>
+        </select>
+
+        <label for="exercise-date">Session date</label>
+
+        <input
+        id="exercise-date"
+        name="date"
+        type="date"
+        required
+        >
+
+        <label for="exercise-duration">Duration in minutes</label>
+
+        <input
+        id="exercise-duration"
+        name="duration"
+        type="number"
+        min="1"
+        max="1440"
+        step="1"
+        placeholder="Enter completed minutes"
+        required
+        >
+
+        <label for="exercise-effort">Perceived effort</label>
+
+        <select
+        id="exercise-effort"
+        name="effort"
+        required
+        >
+        <option value="">Select perceived effort</option>
+        <option value="1">1 — Very light</option>
+        <option value="2">2 — Light</option>
+        <option value="3">3 — Moderate</option>
+        <option value="4">4 — Hard</option>
+        <option value="5">5 — Very hard</option>
+        </select>
+
+        <label for="exercise-notes">Notes (optional)</label>
+
+        <textarea
+        id="exercise-notes"
+        name="notes"
+        rows="4"
+        maxlength="2000"
+        placeholder="Add observations about your session..."
+        ></textarea>
+
+        <button
+        id="save-exercise-button"
+        class="exercise-log-button"
+        type="submit"
+        disabled
+        >
+        Save Exercise
+        </button>
+
+        <p
+        id="exercise-log-message"
+        class="exercise-note"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        ></p>
+    </form>
+    </dialog>
+</body>
+</html>

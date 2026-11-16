@@ -1,0 +1,163 @@
+<!-- This code was developed with the assistance of artificial intelligence, using GPT and Claude. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Astro_Bytes Crew Health Portal — a space mission health monitoring prototype."
+  >
+
+  <title>Sign In | Astro_Bytes Crew Health Portal</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="assets/images/astro_bytes_logo.png"
+  >
+
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+  <main class="login-page">
+    <!-- Native radio controls will support visual focus through CSS. -->
+    <fieldset class="scene-controls">
+      <legend>Visual focus</legend>
+
+      <div class="scene-controls__options">
+        <input
+          type="radio"
+          id="focus-station"
+          name="visual-focus"
+          value="station"
+          checked
+        >
+        <label for="focus-station">Space station</label>
+
+        <input
+          type="radio"
+          id="focus-background"
+          name="visual-focus"
+          value="background"
+        >
+        <label for="focus-background">Space background</label>
+      </div>
+    </fieldset>
+
+    <!-- Decorative layers remain separate for blending and animation. -->
+    <div class="space-scene" aria-hidden="true">
+        <video
+        class="space-scene__background"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        poster="assets/images/background.png"
+        >
+            <source src="assets/videos/space-background.mp4" type="video/mp4">
+        </video>
+
+      <div class="space-scene__station-layer">
+        <img
+          class="space-scene__station"
+          src="assets/images/Estacao_Espacial.png"
+          alt=""
+        >
+      </div>
+    </div>
+
+    <!-- The login panel will remain sharp in both visual focus modes. -->
+    <section class="login-panel" aria-labelledby="login-title">
+      <header class="login-panel__header">
+        <h1 id="login-title">Crew Health Portal</h1>
+        <p id="login-description">
+          Enter your astronaut code to open your mission dashboard.
+        </p>
+      </header>
+
+      <!-- Authentication will be connected in a later implementation step. -->
+      <!-- Look up a demonstration crew profile by its assigned code. -->
+      <form
+        id="login-form"
+        class="login-form"
+        aria-describedby="login-description prototype-notice"
+      >
+        <div class="form-field">
+          <label for="crew-code">Astronaut Code</label>
+
+          <input
+            type="text"
+            id="crew-code"
+            name="crewCode"
+            placeholder="ISS-71-01"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            minlength="3"
+            maxlength="20"
+            pattern="[A-Za-z0-9\-]{3,20}"
+            title="Use 3 to 20 letters, numbers, or hyphens."
+            required
+          >
+        </div>
+
+        <p
+          id="login-message"
+          class="login-form__message"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        ></p>
+
+        <button
+          id="login-button"
+          class="login-form__submit"
+          type="submit"
+        >
+          Sign In
+        </button>
+
+        <p id="prototype-notice" class="prototype-notice">
+          Demonstration access by crew code.
+          Do not enter real personal information.
+        </p>
+
+        <noscript>
+          <p class="prototype-notice">
+            Enable JavaScript to access the crew database.
+          </p>
+        </noscript>
+      </form>
+
+      <footer class="team-credit">
+        <p class="team-credit__label">Created by</p>
+
+        <img
+          class="team-credit__logo"
+          src="assets/images/astro_bytes_logo_nome.png"
+          alt="Astro_Bytes"
+        >
+      </footer>
+    </section>
+
+    <footer class="project-credit">
+      <img
+        class="project-credit__logo"
+        src="assets/images/Logo_Nasa_Transparente.png"
+        alt="NASA"
+      >
+
+      <p class="project-credit__text">
+        NASA Space Apps Challenge project.
+        Independent prototype, not affiliated with or endorsed by NASA.
+      </p>
+    </footer>
+  </main>
+
+  <script type="module" src="assets/js/login.js"></script>
+</body>
+</html>

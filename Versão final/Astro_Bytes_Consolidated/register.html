@@ -1,0 +1,239 @@
+<!-- This code was developed with the assistance of artificial intelligence, using GPT and Claude. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="assets/js/crew-session.js" defer></script>
+  <script src="assets/js/space-effects.js" defer></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Record crew health measurements in the Astro_Bytes health portal."
+  >
+
+  <title>Register Measurements | Astro_Bytes Crew Health Portal</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="assets/images/astro_bytes_logo.png"
+  >
+
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body class="health-body">
+  <canvas id="space-effects" aria-hidden="true"></canvas>
+
+  <div class="health-background" aria-hidden="true">
+    <img src="assets/images/background_segunda_tela.png" alt="">
+  </div>
+
+  <div class="health-page">
+    <header class="dashboard-header">
+  <nav class="dashboard-nav" aria-label="Main navigation">
+    <a class="dashboard-nav__link" href="dashboard.html">Dashboard</a>
+    <a class="dashboard-nav__link" href="health.html">Health</a>
+    <a class="dashboard-nav__link" href="register.html" aria-current="page">Record Measurements</a>
+    <a class="dashboard-nav__link" href="companion.html">Companion</a>
+    <a class="dashboard-nav__link" href="memories.html">Memories</a>
+    <a class="dashboard-nav__link" href="reminders.html">Reminders</a>
+  </nav>
+  <a class="dashboard-exit" href="index.html" data-session-exit>Sign Out</a>
+</header>
+
+    <main id="main-content" class="register-main">
+      <header class="dashboard-intro">
+        <h1>Record health measurements</h1>
+        <p>Enter the crew member's health measurements.</p>
+      </header>
+
+      <section class="health-card register-card" aria-labelledby="register-title">
+        <header class="health-card__header">
+          <h2 id="register-title">Crew measurements</h2>
+          <p>Saved measurements are linked to the health dashboard.</p>
+        </header>
+
+        <form id="measurement-form" class="measurement-form" novalidate>
+          <div class="form-field">
+            <label for="heart-rate-input">Heart rate (BPM)</label>
+            <input
+              type="number"
+              id="heart-rate-input"
+              name="bpm"
+              min="1"
+              max="250"
+              step="1"
+              inputmode="numeric"
+              required
+              aria-describedby="measurement-message"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="spo2-input">Oxygen saturation (SpO2, %)</label>
+            <input
+              type="number"
+              id="spo2-input"
+              name="spo2"
+              min="1"
+              max="100"
+              step="1"
+              inputmode="numeric"
+              required
+              aria-describedby="measurement-message"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="resp-rate-input">Respiratory rate (breaths/min)</label>
+            <input
+              type="number"
+              id="resp-rate-input"
+              name="resp_rate"
+              min="1"
+              max="100"
+              step="1"
+              inputmode="numeric"
+              required
+              aria-describedby="measurement-message"
+            >
+          </div>
+
+          <button class="health-details__trigger measurement-form__submit" type="submit">
+            Save measurements
+          </button>
+
+          <p
+            id="measurement-message"
+            class="measurement-form__message"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          ></p>
+        </form>
+      </section>
+
+      <section class="health-card register-card" aria-labelledby="check-in-title">
+        <header class="health-card__header">
+          <h2 id="check-in-title">Sleep Overview &amp; Daily Check-In</h2>
+          <p>Record sleep duration, fatigue, and sleep quality. Exercise minutes come from the Exercise Plan.</p>
+        </header>
+
+        <form id="check-in-form" class="measurement-form" novalidate>
+          <div class="form-field">
+            <label for="sleep-hours-input">Sleep duration (hours)</label>
+            <input
+              type="number"
+              id="sleep-hours-input"
+              min="0"
+              max="24"
+              step="1"
+              inputmode="numeric"
+              required
+              aria-describedby="check-in-message"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="sleep-minutes-input">Additional minutes</label>
+            <input
+              type="number"
+              id="sleep-minutes-input"
+              min="0"
+              max="59"
+              step="1"
+              inputmode="numeric"
+              required
+              aria-describedby="check-in-message"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="fatigue-input">Reported fatigue (1–5)</label>
+            <select id="fatigue-input" required aria-describedby="check-in-message">
+              <option value="">Select a level</option>
+              <option value="1">1 — Very mild</option>
+              <option value="2">2 — Mild</option>
+              <option value="3">3 — Moderate</option>
+              <option value="4">4 — High</option>
+              <option value="5">5 — Severe</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="sleep-quality-input">Reported sleep quality</label>
+            <select id="sleep-quality-input" required aria-describedby="check-in-message">
+              <option value="">Select a quality</option>
+              <option value="Poor">Poor</option>
+              <option value="Fair">Fair</option>
+              <option value="Good">Good</option>
+              <option value="Very good">Very good</option>
+              <option value="Excellent">Excellent</option>
+            </select>
+          </div>
+
+          <button class="health-details__trigger measurement-form__submit" type="submit">
+            Save sleep and check-in
+          </button>
+
+          <p
+            id="check-in-message"
+            class="measurement-form__message"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          ></p>
+        </form>
+      </section>
+
+      <section class="health-card register-card" aria-labelledby="radiation-form-title">
+        <header class="health-card__header">
+          <h2 id="radiation-form-title">Radiation dose</h2>
+          <p>
+            Enter the dose from the personal dosimeter since the previous reading.
+            Each reading is added to today's record and to the mission total.
+          </p>
+        </header>
+
+        <form id="radiation-form" class="measurement-form" novalidate>
+          <div class="form-field">
+            <label for="radiation-dose-input">Dose since last reading (mSv)</label>
+            <input
+              type="number"
+              id="radiation-dose-input"
+              name="dose_msv"
+              min="0"
+              max="1000"
+              step="any"
+              inputmode="decimal"
+              required
+              aria-describedby="radiation-message"
+            >
+          </div>
+
+          <button class="health-details__trigger measurement-form__submit" type="submit">
+            Save radiation dose
+          </button>
+
+          <p
+            id="radiation-message"
+            class="measurement-form__message"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          ></p>
+        </form>
+      </section>
+
+      <a class="health-details__trigger measurement-register-link" href="health.html">
+        ← Back to Health
+      </a>
+    </main>
+  </div>
+
+  <script type="module" src="assets/js/register.js"></script>
+</body>
+</html>

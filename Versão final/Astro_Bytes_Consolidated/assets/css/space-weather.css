@@ -1,0 +1,108 @@
+/* This code was developed with the assistance of artificial intelligence, using GPT and Claude. */
+
+/* NASA DONKI space weather card (uses the tokens from style.css) */
+
+.space-weather__status {
+  margin: 0 0 16px;
+  padding: 14px 16px;
+
+  border: 2px solid;
+  border-radius: 14px;
+
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Gray: loading, or data not available */
+
+.space-weather__status[data-state="loading"],
+.space-weather__status[data-state="error"] {
+  border-color: #94a3b8;
+  background: #263244;
+  color: #e2e8f0;
+}
+
+/* Green: no notifications in the period */
+
+.space-weather__status[data-state="quiet"] {
+  border-color: #4ade80;
+  background: #103b2b;
+  color: #dcfce7;
+}
+
+/* Blue: solar activity reported, no particle events */
+
+.space-weather__status[data-state="activity"] {
+  border-color: #38bdf8;
+  background: #0c3045;
+  color: #e0f2fe;
+}
+
+/* Yellow: solar energetic particle event reported */
+
+.space-weather__status[data-state="watch"] {
+  border-color: #facc15;
+  background: #40330c;
+  color: #fef9c3;
+}
+
+.space-weather__list {
+  display: grid;
+  gap: 10px;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.space-weather__list:empty {
+  display: none;
+}
+
+.space-weather__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
+
+  padding: 12px;
+
+  border: 1px solid rgba(0, 229, 237, 0.25);
+  border-radius: 12px;
+
+  background: rgba(4, 19, 33, 0.4);
+}
+
+.space-weather__type {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.space-weather__item time {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.space-weather__item a {
+  color: var(--accent);
+  font-size: 0.85rem;
+  text-underline-offset: 4px;
+}
+
+.space-weather__item a:hover {
+  color: #ffffff;
+}
+
+.space-weather__item a:focus-visible {
+  border-radius: 4px;
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.space-weather__note {
+  margin: 16px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}

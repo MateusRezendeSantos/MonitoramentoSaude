@@ -1,0 +1,652 @@
+/* Developed with assistance from GPT and Claude; reviewed and adapted by the project team. */
+
+/* Only what is specific to the Memories page. */
+.memories-body {
+  --text: #eef2fb;
+  --muted: #aab3c8;
+  --cyan: #00e5ed;
+  --pink: #ff9ec7;
+  --peach: #ffd3a8;
+  --card: #262a38;
+}
+
+.health-page {
+  position: relative;
+  z-index: 1;
+}
+
+.memories-main {
+  display: block;
+}
+
+.memories-card {
+  margin-top: 24px;
+}
+
+/* controls */
+.bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 28px 0 30px;
+  align-items: center;
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  font: inherit;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(38,42,56,.7);
+  border: 1.5px solid #3a4157;
+  padding: 9px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform .2s,border-color .2s,background .2s;
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--cyan);
+}
+
+.chip[aria-pressed="true"] {
+  background: var(--cyan);
+  color: #06222a;
+  border-color: var(--cyan);
+}
+
+.add {
+  font: inherit;
+  font-weight: 800;
+  color: #2a1330;
+  background: linear-gradient(135deg,var(--pink),var(--peach));
+  border: 0;
+  padding: 12px 24px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(255,158,199,.28);
+  transition: transform .2s,box-shadow .2s;
+}
+
+.add:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(255,158,199,.4);
+}
+
+.memories-body :focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+/* gallery */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(230px,1fr));
+  gap: 34px 28px;
+}
+
+.polaroid {
+  position: relative;
+  border: 0;
+  font: inherit;
+  color: #3b3050;
+  text-align: left;
+  cursor: pointer;
+  background: #fff8f2;
+  border-radius: 22px;
+  padding: 12px 12px 16px;
+  box-shadow: 0 14px 34px rgba(0,0,0,.45);
+  transform: rotate(var(--tilt));
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+}
+
+.polaroid:hover {
+  transform: rotate(0) translateY(-8px) scale(1.04);
+  box-shadow: 0 22px 44px rgba(0,0,0,.55),0 0 0 3px rgba(92,225,230,.5);
+}
+
+.photo {
+  aspect-ratio: 1/1;
+  border-radius: 14px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  font-size: 4.6rem;
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo span {
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,.15));
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+
+.polaroid:hover .photo span {
+  transform: scale(1.18) rotate(-6deg);
+}
+
+.cap {
+  margin-top: 12px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  padding: 0 4px;
+}
+
+.date {
+  font-size: .88rem;
+  color: #8a7f9c;
+  padding: 2px 4px 0;
+}
+
+.heart {
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  font-size: 1.5rem;
+  opacity: 0;
+  transform: scale(.4);
+  transition: .3s;
+}
+
+.polaroid:hover .heart {
+  opacity: 1;
+  transform: scale(1) rotate(10deg);
+}
+
+.empty {
+  grid-column: 1/-1;
+  text-align: center;
+  color: var(--muted);
+  padding: 60px 0;
+}
+
+/* lightbox */
+.memories-dialog {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  max-width: min(560px,92vw);
+  width: 100%;
+  margin: auto;
+  overflow: visible;
+}
+
+.memories-dialog::backdrop {
+  background: rgba(3,2,12,.8);
+  backdrop-filter: blur(6px);
+}
+
+.box {
+  background: #fff8f2;
+  color: #3b3050;
+  border-radius: 28px;
+  padding: 16px 16px 22px;
+  box-shadow: 0 30px 70px rgba(0,0,0,.6);
+  animation: pop .35s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes pop {
+  from {
+    transform: scale(.85);
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+
+}
+
+.box .photo {
+  aspect-ratio: 4/3;
+  font-size: 8rem;
+  border-radius: 18px;
+}
+
+.box h2 {
+  color: #3b3050;
+  font-size: 1.5rem;
+  margin: 16px 6px 2px;
+}
+
+.box p {
+  margin: 0 6px;
+  color: #8a7f9c;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 6px 0;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  font: inherit;
+  font-weight: 800;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 18px;
+  cursor: pointer;
+  background: #efe3f7;
+  color: #3b3050;
+  transition: transform .2s;
+}
+
+.btn:hover {
+  transform: scale(1.06);
+}
+
+.btn.danger {
+  background: #ffe0e4;
+  color: #a23a52;
+}
+
+.close {
+  position: absolute;
+  top: -14px;
+  right: -6px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--cyan);
+  color: #06222a;
+  font-size: 1.3rem;
+  font-weight: 800;
+  border: 0;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,.4);
+}
+
+#file {
+  display: none;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translate(-50%,30px);
+  background: var(--card);
+  border: 1px solid var(--cyan);
+  padding: 12px 22px;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: .35s;
+  z-index: 5;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%,0);
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .memories-body * {
+    animation: none!important;
+    transition: none!important;
+  }
+
+}
+
+@media (max-width:600px) {
+  .grid {
+    gap: 28px 18px;
+  }
+
+}
+
+/* Keep hidden controls hidden and the viewer within the viewport. */
+.memories-body [hidden] {
+  display: none !important;
+}
+
+.memories-dialog {
+  max-height: 90vh;
+  max-height: 90svh;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.box {
+  position: relative;
+}
+
+.close {
+  top: 8px;
+  right: 8px;
+}
+
+.memories-body .grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+}
+
+.memories-body .cap,
+.memories-body .date {
+  overflow-wrap: anywhere;
+}
+
+.memories-body .btn,
+.memories-body .chip,
+.memories-body .add {
+  min-height: 44px;
+}
+
+/* Heading and astronomy sticky note */
+
+.memories-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  align-items: start;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.memories-heading .dashboard-intro {
+  display: block;
+}
+
+.memories-heading .dashboard-intro p {
+  margin-top: 10px;
+}
+
+/* Taped sticky note */
+
+.apod-note {
+  position: relative;
+  padding: 26px 18px 18px;
+
+  border-radius: 5px 5px 24px 5px;
+
+  background: #fff7df;
+  color: #253147;
+
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+  transform: rotate(2deg);
+}
+
+.apod-note::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 50%;
+
+  width: 64px;
+  height: 30px;
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(203, 225, 236, 0.65);
+
+  transform: translateX(-50%) rotate(-9deg);
+}
+
+.apod-note h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.apod-note__subtitle {
+  margin: 7px 0 14px;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.apod-note__image {
+  display: block;
+  width: 100%;
+  height: 155px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #142035;
+}
+
+.apod-note h3 {
+  margin: 12px 0 6px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+#apod-date,
+#apod-status {
+  margin: 6px 0 12px;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+#apod-status:empty {
+  display: none;
+}
+
+.apod-note button,
+.apod-dialog button {
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 999px;
+
+  background: #075985;
+  color: #ffffff;
+
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.apod-note button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* Astronomy details */
+
+.apod-dialog {
+  width: min(92vw, 700px);
+  max-height: 85vh;
+  max-height: 85svh;
+  padding: 24px;
+
+  border: 1px solid #00e5ed;
+  border-radius: 22px;
+
+  background: #101c32;
+  color: #f4f8ff;
+
+  overflow-y: auto;
+}
+
+.apod-dialog::backdrop {
+  background: rgba(0, 4, 18, 0.85);
+}
+
+.apod-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.apod-dialog__header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.apod-dialog__header form {
+  margin: 0;
+}
+
+#apod-explanation {
+  color: #d5dfed;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+#apod-credit {
+  color: #bac8d8;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+#apod-source {
+  color: #8dfff6;
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .memories-heading {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .apod-note {
+    width: min(100%, 320px);
+    justify-self: center;
+    transform: none;
+  }
+}
+
+/* Sticky note overlapping the gallery's upper edge. */
+
+.memories-card {
+  position: relative;
+  isolation: isolate;
+  margin-top: 65px;
+}
+
+.memories-card > .apod-note {
+  position: absolute;
+  top: -65px;
+  right: 190px;
+  z-index: 2;
+
+  width: 240px;
+  padding: 22px 16px 16px;
+
+  transform: rotate(-8deg);
+}
+
+/* Reserve room so the note does not cover controls or photos. */
+
+.memories-card > .health-card__header {
+  min-height: 245px;
+  padding-right: 460px;
+}
+
+.apod-note__image {
+  height: 110px;
+}
+
+.apod-note h2 {
+  font-size: 1rem;
+}
+
+.apod-note h3 {
+  margin: 12px 0 6px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.apod-note__subtitle,
+#apod-date,
+#apod-status {
+  font-size: 0.7rem;
+}
+
+/* Use a smaller overlap on tablet and mobile screens. */
+
+@media (max-width: 900px) {
+  .memories-card {
+    margin-top: 40px;
+  }
+
+  .memories-card > .apod-note {
+    position: relative;
+    top: auto;
+    right: auto;
+
+    width: min(100%, 280px);
+    margin: -55px auto 28px;
+
+    transform: rotate(-3deg);
+  }
+
+  .memories-card > .health-card__header {
+    min-height: 0;
+    padding-right: 0;
+  }
+}
+/* Place the astronomy note below the gallery. */
+
+.memories-card {
+  margin-top: 24px;
+}
+
+.memories-card > .health-card__header {
+  min-height: 0;
+  padding-right: 0;
+}
+
+.memories-main > .apod-note {
+  position: relative;
+  inset: auto;
+  z-index: auto;
+
+  width: min(100%, 300px);
+  margin: 40px auto 24px;
+  padding: 26px 18px 18px;
+
+  transform: rotate(-3deg);
+}
+
+/* Restore the original Memories heading and spacing. */
+
+.memories-main {
+  display: block;
+}
+
+.memories-main > .dashboard-intro {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.memories-main > .dashboard-intro h1,
+.memories-main > .dashboard-intro p {
+  margin: 0;
+}
+
+.memories-main > .memories-card {
+  margin-top: 24px;
+}
+
+.memories-card > .health-card__header {
+  min-height: 0;
+  padding-right: 0;
+}

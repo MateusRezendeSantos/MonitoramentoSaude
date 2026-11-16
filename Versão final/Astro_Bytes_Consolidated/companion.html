@@ -1,0 +1,495 @@
+<!-- This code was developed with the assistance of artificial intelligence, using GPT and Claude. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Spend time with Rise, collect virtual coins, and customize your space companion."
+  >
+
+  <title>Companion | Astro_Bytes Crew Health Portal</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="assets/images/astro_bytes_logo.png"
+  >
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/companion.css">
+
+  <script type="module" src="assets/js/companion.js"></script>
+  <script src="assets/js/space-effects.js" defer></script>
+  <script src="assets/js/crew-session.js" defer></script>
+</head>
+
+<body class="companion-body">
+
+    <!-- Decorative stars and cursor glow -->
+    <canvas id="space-effects" aria-hidden="true"></canvas>
+
+  <!-- Decorative background -->
+  <div class="companion-background" aria-hidden="true">
+    <img src="assets/images/background_rise.png" alt="">
+  </div>
+
+  <div class="companion-page">
+    <header class="dashboard-header">
+  <nav class="dashboard-nav" aria-label="Main navigation">
+    <a class="dashboard-nav__link" href="dashboard.html">Dashboard</a>
+    <a class="dashboard-nav__link" href="health.html">Health</a>
+    <a class="dashboard-nav__link" href="register.html">Record Measurements</a>
+    <a class="dashboard-nav__link" href="companion.html" aria-current="page">Companion</a>
+    <a class="dashboard-nav__link" href="memories.html">Memories</a>
+    <a class="dashboard-nav__link" href="reminders.html">Reminders</a>
+  </nav>
+  <a class="dashboard-exit" href="index.html" data-session-exit>Sign Out</a>
+</header>
+
+    <main class="companion-main" aria-labelledby="companion-title">
+      <header class="companion-intro">
+        <h1 id="companion-title">Meet Rise</h1>
+        <p>Your companion for a little space break.</p>
+      </header>
+
+      <section class="pet-playground" aria-label="Interact with Rise">
+        <!-- Left-side actions -->
+        <div class="pet-actions pet-actions--left">
+          <button
+            id="cheer-button"
+            class="pet-action"
+            type="button"
+            disabled
+          >
+            Cheer Up
+          </button>
+
+          <button
+            id="collect-button"
+            class="pet-action"
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="coin-game-dialog"
+            disabled
+          >
+            Collect Coins
+          </button>
+        </div>
+
+        <!-- Pet and accessory layers share the same stage. -->
+        <div class="pet-stage">
+          <p
+            id="pet-message"
+            class="pet-message"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            Hello, explorer! Ready for a little break?
+          </p>
+
+          <div id="sleep-animation" class="sleep-animation" aria-hidden="true" hidden>
+            <span>Z</span>
+            <span>Z</span>
+            <span>Z</span>
+          </div>
+
+          <button
+            id="pet-face-button"
+            class="pet-character"
+            type="button"
+            aria-label="Gently poke Rise"
+            disabled
+          >
+            <img
+              id="pet-image"
+              class="pet-character__image"
+              src="assets/images/rise_pet_normal.png"
+              alt="Rise smiling"
+              draggable="false"
+            >
+
+            <img
+              id="pet-tie"
+              class="pet-character__accessory pet-character__accessory--tie"
+              src="assets/images/rise_tie.png"
+              alt=""
+              draggable="false"
+              hidden
+            >
+
+            <img
+              id="pet-helmet"
+              class="pet-character__accessory pet-character__accessory--helmet"
+              src="assets/images/rise_helmet.png"
+              alt=""
+              draggable="false"
+              hidden
+            >
+          </button>
+
+          <div class="pet-shadow" aria-hidden="true"></div>
+
+          <p id="pet-outfit-label" class="pet-outfit-label">
+            Outfit: Original
+          </p>
+        </div>
+
+        <!-- Right-side actions -->
+        <div class="pet-actions pet-actions--right">
+          <button
+            id="affection-button"
+            class="pet-action"
+            type="button"
+            disabled
+          >
+            Pet Rise
+          </button>
+
+          <button
+            id="rest-button"
+            class="pet-action"
+            type="button"
+            disabled
+          >
+            Rest
+          </button>
+        </div>
+      </section>
+
+      <footer class="companion-toolbar">
+        <div class="coin-wallet">
+          <img
+            class="coin-wallet__icon"
+            src="assets/images/rise_coin.png"
+            alt=""
+          >
+
+          <p class="coin-wallet__label">
+            Coins:
+            <output id="coin-balance">0</output>
+          </p>
+        </div>
+
+        <div class="companion-toolbar__actions">
+          <button
+            id="about-rise-button"
+            class="customize-button"
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="about-rise-dialog"
+          >
+            About Rise
+          </button>
+
+          <button
+            id="customize-button"
+            class="customize-button"
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="customize-dialog"
+            disabled
+          >
+            Customize
+          </button>
+        </div>
+      </footer>
+
+      <p id="companion-setup-note" class="companion-notice">
+        Interactive controls will be available once the game script is ready.
+      </p>
+
+      <noscript>
+        <p class="companion-notice">
+          Enable JavaScript to interact with Rise and play the coin game.
+        </p>
+      </noscript>
+    </main>
+  </div>
+
+  <!-- Coin game dialog -->
+  <dialog
+    id="coin-game-dialog"
+    class="game-dialog"
+    aria-labelledby="coin-game-title"
+    aria-describedby="coin-game-instructions"
+  >
+    <header class="dialog-header">
+      <h2 id="coin-game-title">Collect Coins</h2>
+
+      <form method="dialog">
+        <button
+          class="dialog-close"
+          type="submit"
+          value="close"
+          aria-label="Close coin game"
+        >
+          Close
+        </button>
+      </form>
+    </header>
+
+    <p id="coin-game-instructions">
+      Collect as many coins as you can in 20 seconds.
+      Each coin is worth one point. Use a mouse, touch,
+      or Tab and Enter to collect coins.
+    </p>
+
+    <div class="game-scoreboard">
+      <p>
+        Time left:
+        <span id="game-time">20</span> s
+      </p>
+
+      <p>
+        Collected:
+        <output id="game-score">0</output>
+      </p>
+    </div>
+
+    <!-- JavaScript will create collectible coin buttons here. -->
+    <div
+      id="coin-game-area"
+      class="coin-game-area"
+      role="group"
+      aria-label="Coin collection area"
+    ></div>
+
+    <p
+      id="game-message"
+      class="game-message"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      Select Start Game when you are ready.
+    </p>
+
+    <button
+      id="start-game-button"
+      class="game-start-button"
+      type="button"
+      disabled
+    >
+      Start Game
+    </button>
+  </dialog>
+
+  <!-- Customization shop -->
+  <dialog
+    id="customize-dialog"
+    class="customize-dialog"
+    aria-labelledby="customize-title"
+    aria-describedby="customize-description"
+  >
+    <header class="dialog-header">
+      <h2 id="customize-title">Customize Rise</h2>
+
+      <form method="dialog">
+        <button
+          class="dialog-close"
+          type="submit"
+          value="close"
+          aria-label="Close customization"
+        >
+          Close
+        </button>
+      </form>
+    </header>
+
+    <p id="customize-description">
+      Spend virtual coins to unlock accessories.
+      Purchased items can be equipped or removed at any time.
+    </p>
+
+    <p class="shop-wallet">
+      Available coins:
+      <output id="shop-balance">0</output>
+    </p>
+
+    <div class="shop-items">
+      <article class="shop-item" aria-labelledby="tie-title">
+        <img
+          class="shop-item__image"
+          src="assets/images/rise_tie.png"
+          alt="Green, yellow, and blue bow tie"
+        >
+
+        <h3 id="tie-title">Brazilian Bow Tie</h3>
+        <p class="shop-item__price">50 coins</p>
+        <p id="tie-status" class="shop-item__status">Not owned</p>
+
+        <button
+          id="buy-tie-button"
+          class="shop-item__button"
+          type="button"
+          disabled
+        >
+          Buy Brazilian Bow Tie — 50 coins
+        </button>
+
+        <button
+          id="equip-tie-button"
+          class="shop-item__button"
+          type="button"
+          aria-pressed="false"
+          disabled
+        >
+          Equip Brazilian Bow Tie
+        </button>
+      </article>
+
+      <article class="shop-item" aria-labelledby="helmet-title">
+        <img
+          class="shop-item__image"
+          src="assets/images/rise_helmet.png"
+          alt="Blue astronaut helmet"
+        >
+
+        <h3 id="helmet-title">Astronaut Helmet</h3>
+        <p class="shop-item__price">100 coins</p>
+        <p id="helmet-status" class="shop-item__status">Not owned</p>
+
+        <button
+          id="buy-helmet-button"
+          class="shop-item__button"
+          type="button"
+          disabled
+        >
+          Buy Astronaut Helmet — 100 coins
+        </button>
+
+        <button
+          id="equip-helmet-button"
+          class="shop-item__button"
+          type="button"
+          aria-pressed="false"
+          disabled
+        >
+          Equip Astronaut Helmet
+        </button>
+      </article>
+    </div>
+
+    <button
+      id="remove-accessories-button"
+      class="remove-accessories-button"
+      type="button"
+      disabled
+    >
+      Remove All Accessories
+    </button>
+
+    <p
+      id="shop-message"
+      class="shop-message"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    ></p>
+  </dialog>
+
+  <!-- Background information about the original Rise character -->
+  <dialog
+    id="about-rise-dialog"
+    class="about-rise-dialog"
+    aria-labelledby="about-rise-title"
+  >
+    <header class="dialog-header">
+      <h2 id="about-rise-title">Meet the Real Rise</h2>
+
+      <form method="dialog">
+        <button
+          class="dialog-close"
+          type="submit"
+          aria-label="Close About Rise"
+        >
+          Close
+        </button>
+      </form>
+    </header>
+
+    <img
+      class="about-rise-image"
+      src="assets/images/rise_pet_happy.png"
+      alt="Astro_Bytes' illustrated adaptation of Rise"
+    >
+
+    <div class="about-rise-facts">
+      <section>
+        <h3>A Companion for Artemis II</h3>
+        <p>
+          The Artemis II crew selected Rise as the mission's
+          zero-gravity indicator.
+        </p>
+      </section>
+
+      <section>
+        <h3>What Is a Zero-Gravity Indicator?</h3>
+        <p>
+          It is a small object, often a plush toy, that floats
+          freely when the spacecraft and its contents experience
+          weightlessness. It provides a simple visual cue for the crew.
+        </p>
+      </section>
+
+      <section>
+        <h3>Designed by Lucas Ye</h3>
+        <p>
+          Rise was designed by Lucas Ye from Mountain View,
+          California.
+        </p>
+      </section>
+
+      <section>
+        <h3>Inspired by Earthrise</h3>
+        <p>
+          The design pays tribute to Earthrise, the iconic view
+          of Earth above the lunar horizon associated with Apollo 8.
+        </p>
+      </section>
+
+      <section>
+        <h3>Our Interactive Adaptation</h3>
+        <p>
+          Astro_Bytes uses an illustrated adaptation of Rise
+          as a playful virtual companion. The expressions,
+          coin game, and accessories belong to this independent
+          prototype, not to an official NASA application.
+        </p>
+      </section>
+    </div>
+
+    <footer class="about-rise-sources">
+      <h3>Explore the Official Sources</h3>
+
+      <ul>
+        <li>
+          <a
+            href="https://www.nasa.gov/missions/nasa-answers-your-most-pressing-artemis-ii-questions/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            NASA: Artemis II Questions and Answers
+            (opens in a new tab)
+          </a>
+        </li>
+
+        <li>
+          <a
+            href="https://svs.gsfc.nasa.gov/14995/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            NASA: Moon Mascot Ready to Rise with Artemis II
+            (opens in a new tab)
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </dialog>
+</body>
+</html>
